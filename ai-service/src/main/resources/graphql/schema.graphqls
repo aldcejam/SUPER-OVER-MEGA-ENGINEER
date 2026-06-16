@@ -1,0 +1,7 @@
+type Query {
+    askGemini(prompt: String!): AiResponse!
+}
+
+type AiResponse {
+    answer: String!
+}

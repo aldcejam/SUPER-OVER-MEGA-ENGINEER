@@ -1,0 +1,5 @@
+com/supersys/ai/controller/AiGraphQLController$AiResponse.class
+com/supersys/ai/entity/DocumentEntity.class
+com/supersys/ai/controller/AiGraphQLController.class
+com/supersys/ai/repository/DocumentRepository.class
+com/supersys/ai/AiServiceApplication.class

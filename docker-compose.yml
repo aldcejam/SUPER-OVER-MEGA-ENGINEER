@@ -1,0 +1,210 @@
+# ============================================
+# TEMPLATES (YAML Anchors)
+# ============================================
+x-eureka-base: &eureka-base
+  build:
+    context: ./eureka-server
+    dockerfile: ../Dockerfile
+  depends_on:
+    config-server:
+      condition: service_healthy
+  healthcheck:
+    test: ["CMD", "wget", "--spider", "-q", "http://localhost:8761/actuator/health"]
+    interval: 10s
+    timeout: 5s
+    retries: 10
+    start_period: 30s
+  networks:
+    - supersys-net
+
+services:
+
+  # ============================================
+  # INFRAESTRUTURA
+  # ============================================
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: supersys-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - supersys-net
+
+  # ============================================
+  # CONFIG SERVER
+  # ============================================
+
+  config-server:
+    build:
+      context: ./config-server
+      dockerfile: ../Dockerfile
+    container_name: supersys-config-server
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./config-repo:/app/config-repo
+    environment:
+      - SPRING_PROFILES_ACTIVE=native
+      - SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH-LOCATIONS=file:/app/config-repo/
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8888/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - supersys-net
+
+  # ============================================
+  # EUREKA SERVERS (Service Discovery Cluster)
+  # ============================================
+
+  eureka-server-1:
+    <<: *eureka-base
+    container_name: supersys-eureka-server-1
+    ports:
+      - "8761:8761"
+    environment:
+      - EUREKA_INSTANCE_HOSTNAME=eureka-server-1
+      - EUREKA_REGISTER_WITH_EUREKA=true
+      - EUREKA_FETCH_REGISTRY=true
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server-2:8761/eureka/,http://eureka-server-3:8761/eureka/
+
+  eureka-server-2:
+    <<: *eureka-base
+    container_name: supersys-eureka-server-2
+    ports:
+      - "8762:8761"
+    environment:
+      - EUREKA_INSTANCE_HOSTNAME=eureka-server-2
+      - EUREKA_REGISTER_WITH_EUREKA=true
+      - EUREKA_FETCH_REGISTRY=true
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server-1:8761/eureka/,http://eureka-server-3:8761/eureka/
+
+  eureka-server-3:
+    <<: *eureka-base
+    container_name: supersys-eureka-server-3
+    ports:
+      - "8763:8761"
+    environment:
+      - EUREKA_INSTANCE_HOSTNAME=eureka-server-3
+      - EUREKA_REGISTER_WITH_EUREKA=true
+      - EUREKA_FETCH_REGISTRY=true
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server-1:8761/eureka/,http://eureka-server-2:8761/eureka/
+
+  # ============================================
+  # API GATEWAY
+  # ============================================
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: ../Dockerfile
+    container_name: supersys-api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server-1:8761/eureka/,http://eureka-server-2:8761/eureka/,http://eureka-server-3:8761/eureka/
+    depends_on:
+      config-server:
+        condition: service_healthy
+      eureka-server-1:
+        condition: service_healthy
+      eureka-server-2:
+        condition: service_healthy
+      eureka-server-3:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+    networks:
+      - supersys-net
+
+  # ============================================
+  # AI SERVICE
+  # ============================================
+
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: ../Dockerfile
+    container_name: supersys-ai-service
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server-1:8761/eureka/,http://eureka-server-2:8761/eureka/,http://eureka-server-3:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    depends_on:
+      config-server:
+        condition: service_healthy
+      eureka-server-1:
+        condition: service_healthy
+      eureka-server-2:
+        condition: service_healthy
+      eureka-server-3:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    networks:
+      - supersys-net
+
+  # ============================================
+  # OBSERVABILIDADE
+  # ============================================
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: supersys-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./observability/prometheus-docker.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    depends_on:
+      - api-gateway
+    networks:
+      - supersys-net
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: supersys-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
+    depends_on:
+      - prometheus
+    networks:
+      - supersys-net
+
+# ============================================
+# VOLUMES & NETWORKS
+# ============================================
+
+volumes:
+  pgdata:
+
+networks:
+  supersys-net:
+    driver: bridge
