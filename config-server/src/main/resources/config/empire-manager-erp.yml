@@ -1,0 +1,28 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: empire-manager-erp
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/supersys}
+    username: ${SPRING_DATASOURCE_USERNAME:supersys_admin}
+    password: ${SPRING_DATASOURCE_PASSWORD:admin123}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  graphql:
+    graphiql:
+      enabled: true
+      path: /graphiql
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

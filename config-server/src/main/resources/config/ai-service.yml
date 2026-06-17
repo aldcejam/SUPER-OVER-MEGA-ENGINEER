@@ -1,0 +1,31 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: ai-service
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/supersys_vector_db}
+    username: ${SPRING_DATASOURCE_USERNAME:apm}
+    password: ${SPRING_DATASOURCE_PASSWORD:super}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  ai:
+    gemini:
+      api-key: ${GEMINI_API_KEY:placeholder_api_key}
+    vectorstore:
+      pgvector:
+        table-name: vector_store
+        dimension: 768
+        initialize-schema: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

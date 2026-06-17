@@ -16,6 +16,8 @@ x-eureka-base: &eureka-base
     start_period: 30s
   networks:
     - supersys-net
+  environment:
+    - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
 
 services:
 
@@ -67,11 +69,6 @@ services:
     container_name: supersys-config-server
     ports:
       - "8888:8888"
-    volumes:
-      - ./deploy:/app/config-repo
-    environment:
-      - SPRING_PROFILES_ACTIVE=native
-      - SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH-LOCATIONS=file:/app/config-repo/
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:8888/actuator/health"]
       interval: 10s
@@ -91,6 +88,7 @@ services:
     ports:
       - "8761:8761"
     environment:
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
       - EUREKA_INSTANCE_HOSTNAME=eureka-server-1
       - EUREKA_REGISTER_WITH_EUREKA=true
       - EUREKA_FETCH_REGISTRY=true
@@ -102,6 +100,7 @@ services:
     ports:
       - "8762:8761"
     environment:
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
       - EUREKA_INSTANCE_HOSTNAME=eureka-server-2
       - EUREKA_REGISTER_WITH_EUREKA=true
       - EUREKA_FETCH_REGISTRY=true
@@ -113,10 +112,12 @@ services:
     ports:
       - "8763:8761"
     environment:
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
       - EUREKA_INSTANCE_HOSTNAME=eureka-server-3
       - EUREKA_REGISTER_WITH_EUREKA=true
       - EUREKA_FETCH_REGISTRY=true
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server-1:8761/eureka/,http://eureka-server-2:8761/eureka/
+
 
   # ============================================
   # API GATEWAY
@@ -251,12 +252,25 @@ services:
     networks:
       - supersys-net
 
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: supersys-portainer
+    ports:
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    restart: always
+    networks:
+      - supersys-net
+
 # ============================================
 # VOLUMES & NETWORKS
 # ============================================
 
 volumes:
   pgdata:
+  portainer_data:
 
 networks:
   supersys-net:

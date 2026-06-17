@@ -1,0 +1,11 @@
+spring:
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:}
+    port: ${SPRING_RABBITMQ_PORT:}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:}
+  instance:
+    preferIpAddress: true

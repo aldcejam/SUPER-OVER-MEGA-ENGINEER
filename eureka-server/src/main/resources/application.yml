@@ -1,19 +1,6 @@
 spring:
   application:
     name: eureka-server
-
-server:
-  port: 8761
-
-eureka:
-  instance:
-    hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
-    prefer-ip-address: false
-  client:
-    register-with-eureka: ${EUREKA_REGISTER_WITH_EUREKA:true}
-    fetch-registry: ${EUREKA_FETCH_REGISTRY:true}
-    service-url:
-      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
-  server:
-    waitTimeInMsWhenSyncEmpty: 0
+  config:
+    import: "optional:configserver:http://localhost:8888"
 

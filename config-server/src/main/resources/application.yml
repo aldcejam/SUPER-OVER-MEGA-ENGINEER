@@ -4,5 +4,11 @@ server:
 spring:
   application:
     name: config-server
-  profiles:
-    active: local
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/aldcejam/SUPER-OVER-MEGA-ENGINEER.git
+          search-paths: config-server/src/main/resources/config
+          default-label: main
+          clone-on-start: true
