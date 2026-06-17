@@ -3,3 +3,6 @@ spring:
     name: ai-service
   config:
     import: "optional:configserver:http://localhost:8888"
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:localhost}
+    port: ${SPRING_RABBITMQ_PORT:5672}

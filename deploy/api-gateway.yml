@@ -21,11 +21,23 @@ spring:
             - Path=/function/**
           filters:
             - StripPrefix=1
+        - id: ai-service-route
+          uri: lb://ai-service
+          predicates:
+            - Path=/ai/**
+          filters:
+            - StripPrefix=1
+        - id: empire-manager-erp-route
+          uri: lb://empire-manager-erp
+          predicates:
+            - Path=/empire/**
+          filters:
+            - StripPrefix=1
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
   instance:
     preferIpAddress: true
 

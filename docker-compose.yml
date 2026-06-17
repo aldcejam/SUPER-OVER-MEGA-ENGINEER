@@ -42,6 +42,20 @@ services:
     networks:
       - supersys-net
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: supersys-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - supersys-net
+
   # ============================================
   # CONFIG SERVER
   # ============================================
@@ -54,7 +68,7 @@ services:
     ports:
       - "8888:8888"
     volumes:
-      - ./config-repo:/app/config-repo
+      - ./deploy:/app/config-repo
     environment:
       - SPRING_PROFILES_ACTIVE=native
       - SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH-LOCATIONS=file:/app/config-repo/
@@ -154,6 +168,8 @@ services:
       - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
       - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
     depends_on:
       config-server:
         condition: service_healthy
@@ -164,6 +180,43 @@ services:
       eureka-server-3:
         condition: service_healthy
       postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - supersys-net
+
+  # ============================================
+  # EMPIRE MANAGER ERP
+  # ============================================
+
+  empire-manager-erp:
+    build:
+      context: ./empire-manager-erp
+      dockerfile: ../Dockerfile
+    container_name: supersys-empire-manager-erp
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server-1:8761/eureka/,http://eureka-server-2:8761/eureka/,http://eureka-server-3:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+    depends_on:
+      config-server:
+        condition: service_healthy
+      eureka-server-1:
+        condition: service_healthy
+      eureka-server-2:
+        condition: service_healthy
+      eureka-server-3:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      rabbitmq:
         condition: service_healthy
     networks:
       - supersys-net

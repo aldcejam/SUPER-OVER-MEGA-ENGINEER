@@ -1,0 +1,43 @@
+# ==========================================
+# IDE & System Files
+# ==========================================
+.idea/
+*.iml
+*.iws
+*.ipr
+.classpath
+.project
+.settings/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# ==========================================
+# Maven / Java Build Outputs
+# ==========================================
+**/target/
+**/bin/
+**/*.class
+**/*.jar
+**/*.war
+**/*.ear
+.mvn/wrapper/
+.metadata/
+
+# ==========================================
+# Docker & Environments
+# ==========================================
+.env
+docker-compose.override.yml
+*.log
+logs/
+pgdata/
+rabbitmq_data/
+
+# ==========================================
+# Configuration & Temp Files
+# ==========================================
+tmp/
+temp/
+out/
+bin/

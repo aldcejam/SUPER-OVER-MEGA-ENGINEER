@@ -1,0 +1,47 @@
+type Schedule {
+    id: ID!
+    title: String!
+    startDate: String
+    endDate: String
+    status: String
+    details: String
+    analysisResult: String
+    steps: [ScheduleStep]
+}
+
+input ScheduleInput {
+    title: String!
+    startDate: String
+    endDate: String
+    status: String
+    details: String
+    steps: [ScheduleStepInput]
+}
+
+type ScheduleStep {
+    stepName: String!
+    description: String
+    sequence: Int
+    daysRequired: Int
+    completed: Boolean
+}
+
+input ScheduleStepInput {
+    stepName: String!
+    description: String
+    sequence: Int
+    daysRequired: Int
+    completed: Boolean
+}
+
+type Query {
+    findAllSchedules: [Schedule]
+    findScheduleById(id: ID!): Schedule
+}
+
+type Mutation {
+    createSchedule(input: ScheduleInput!): Schedule
+    updateSchedule(id: ID!, input: ScheduleInput!): Schedule
+    deleteSchedule(id: ID!): Boolean
+    requestAnalysis(id: ID!): Boolean
+}

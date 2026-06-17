@@ -12,10 +12,10 @@
     </parent>
 
     <groupId>com.supersys</groupId>
-    <artifactId>api-gateway</artifactId>
+    <artifactId>empire-manager-erp</artifactId>
     <version>1.0.0-RELEASE</version>
-    <name>api-gateway</name>
-    <description>Gateway de Roteamento Dinâmico</description>
+    <name>empire-manager-erp</name>
+    <description>Empire Manager ERP - Serviço de Gestão de Construção</description>
 
     <properties>
         <java.version>21</java.version>
@@ -24,8 +24,29 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-graphql</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
