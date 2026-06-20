@@ -4,13 +4,6 @@ server:
 spring:
   application:
     name: config-server
-  profiles:
-    active: native
-
-spring:
-  config:
-    activate:
-      on-profile: git
   cloud:
     config:
       server:

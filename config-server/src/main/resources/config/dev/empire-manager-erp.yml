@@ -5,9 +5,9 @@ spring:
   application:
     name: empire-manager-erp
   datasource:
-    url: jdbc:postgresql://postgres:5432/supersys-relational-db
-    username: apm
-    password: super_password_2026
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgres:5432/supersys-relational-db}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
