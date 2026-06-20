@@ -5,7 +5,7 @@ spring:
   application:
     name: ai-service
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgres-vector:5432/supersys_vector_db}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/supersys_vector_db}
     username: ${SPRING_DATASOURCE_USERNAME:apm}
     password: ${SPRING_DATASOURCE_PASSWORD:super_password_2026}
     driver-class-name: org.postgresql.Driver
