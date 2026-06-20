@@ -1,0 +1,8 @@
+server:
+  port: 8082
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/supersys_vector_db
+    username: apm
+    password: super_password_2026
