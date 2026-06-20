@@ -17,6 +17,7 @@ x-eureka-base: &eureka-base
   networks:
     - supersys-net
   environment:
+    - SPRING_PROFILES_ACTIVE=dev
     - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
 
 services:
@@ -88,6 +89,7 @@ services:
     ports:
       - "8761:8761"
     environment:
+      - SPRING_PROFILES_ACTIVE=dev
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
       - EUREKA_INSTANCE_HOSTNAME=eureka-server-1
       - EUREKA_REGISTER_WITH_EUREKA=true
@@ -100,6 +102,7 @@ services:
     ports:
       - "8762:8761"
     environment:
+      - SPRING_PROFILES_ACTIVE=dev
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
       - EUREKA_INSTANCE_HOSTNAME=eureka-server-2
       - EUREKA_REGISTER_WITH_EUREKA=true
@@ -112,6 +115,7 @@ services:
     ports:
       - "8763:8761"
     environment:
+      - SPRING_PROFILES_ACTIVE=dev
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
       - EUREKA_INSTANCE_HOSTNAME=eureka-server-3
       - EUREKA_REGISTER_WITH_EUREKA=true
@@ -131,8 +135,8 @@ services:
     ports:
       - "8080:8080"
     environment:
+      - SPRING_PROFILES_ACTIVE=dev
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server-1:8761/eureka/,http://eureka-server-2:8761/eureka/,http://eureka-server-3:8761/eureka/
     depends_on:
       config-server:
         condition: service_healthy
@@ -163,14 +167,9 @@ services:
     ports:
       - "8082:8082"
     environment:
+      - SPRING_PROFILES_ACTIVE=dev
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server-1:8761/eureka/,http://eureka-server-2:8761/eureka/,http://eureka-server-3:8761/eureka/
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB}
-      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
-      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
       - GEMINI_API_KEY=${GEMINI_API_KEY}
-      - SPRING_RABBITMQ_HOST=rabbitmq
-      - SPRING_RABBITMQ_PORT=5672
     depends_on:
       config-server:
         condition: service_healthy
@@ -199,13 +198,8 @@ services:
     ports:
       - "8083:8083"
     environment:
+      - SPRING_PROFILES_ACTIVE=dev
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server-1:8761/eureka/,http://eureka-server-2:8761/eureka/,http://eureka-server-3:8761/eureka/
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB}
-      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
-      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
-      - SPRING_RABBITMQ_HOST=rabbitmq
-      - SPRING_RABBITMQ_PORT=5672
     depends_on:
       config-server:
         condition: service_healthy
@@ -255,6 +249,7 @@ services:
   portainer:
     image: portainer/portainer-ce:latest
     container_name: supersys-portainer
+    command: --admin-password '$$2b$$12$$.IOjTK75FA1h4VQRPtxYSOgwlfqH8qLR5PbHS3msfirSi6EU2MmMa' # Senha original: olamundo123
     ports:
       - "9000:9000"
     volumes:
@@ -263,10 +258,6 @@ services:
     restart: always
     networks:
       - supersys-net
-
-# ============================================
-# VOLUMES & NETWORKS
-# ============================================
 
 volumes:
   pgdata:

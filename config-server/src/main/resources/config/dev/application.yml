@@ -1,7 +1,7 @@
 spring:
   rabbitmq:
-    host: ${SPRING_RABBITMQ_HOST:}
-    port: ${SPRING_RABBITMQ_PORT:}
+    host: rabbitmq
+    port: 5672
 
 eureka:
   client:

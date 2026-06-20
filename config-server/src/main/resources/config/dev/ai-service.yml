@@ -5,9 +5,9 @@ spring:
   application:
     name: ai-service
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/supersys_vector_db}
-    username: ${SPRING_DATASOURCE_USERNAME:apm}
-    password: ${SPRING_DATASOURCE_PASSWORD:super}
+    url: jdbc:postgresql://postgres:5432/supersys_vector_db
+    username: apm
+    password: super_password_2026
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
