@@ -6,6 +6,6 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:}
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://eureka-server-1:8761/eureka/,http://eureka-server-2:8761/eureka/,http://eureka-server-3:8761/eureka/}
   instance:
     preferIpAddress: true
