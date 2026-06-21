@@ -37,6 +37,8 @@ input ScheduleStepInput {
 type Query {
     findAllSchedules: [Schedule]
     findScheduleById(id: ID!): Schedule
+    findAllProjects: [Project]
+    findProjectById(id: ID!): Project
 }
 
 type Mutation {
@@ -44,4 +46,48 @@ type Mutation {
     updateSchedule(id: ID!, input: ScheduleInput!): Schedule
     deleteSchedule(id: ID!): Boolean
     requestAnalysis(id: ID!): Boolean
+    createProject(input: ProjectInput!): Project
+    updateProject(id: ID!, input: ProjectInput!): Project
+    deleteProject(id: ID!): Boolean
+    requestProjectAnalysis(id: ID!): Boolean
+    requestResourceAnalysis(id: ID!): Boolean
 }
+
+type Project {
+    id: ID!
+    name: String!
+    description: String
+    budget: Float
+    status: String
+    analysisResult: String
+    resourceAnalysisResult: String
+    schedule: Schedule
+    allocations: [ResourceAllocation]
+}
+
+input ProjectInput {
+    name: String!
+    description: String
+    budget: Float
+    status: String
+    scheduleId: ID
+    allocations: [ResourceAllocationInput]
+}
+
+type ResourceAllocation {
+    id: ID!
+    resourceName: String!
+    role: String
+    hoursPerWeek: Int
+    costPerHour: Float
+    quantity: Int
+}
+
+input ResourceAllocationInput {
+    resourceName: String!
+    role: String
+    hoursPerWeek: Int
+    costPerHour: Float
+    quantity: Int
+}
+

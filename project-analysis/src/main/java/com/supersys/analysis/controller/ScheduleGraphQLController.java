@@ -2,8 +2,8 @@ package com.supersys.analysis.controller;
 
 import com.supersys.analysis.entity.ScheduleEntity;
 import com.supersys.analysis.entity.ScheduleStep;
-import com.supersys.analysis.messaging.ScheduleMessagingService;
 import com.supersys.analysis.repository.ScheduleRepository;
+import com.supersys.analysis.service.AnalysisRestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -23,7 +23,7 @@ public class ScheduleGraphQLController {
     private ScheduleRepository scheduleRepository;
 
     @Autowired
-    private ScheduleMessagingService messagingService;
+    private AnalysisRestService analysisService;
 
     @QueryMapping
     public List<ScheduleEntity> findAllSchedules() {
@@ -69,11 +69,12 @@ public class ScheduleGraphQLController {
     public Boolean requestAnalysis(@Argument Long id) {
         ScheduleEntity entity = scheduleRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Schedule not found"));
-        messagingService.requestAnalysis(entity);
+        analysisService.requestScheduleAnalysis(entity);
         entity.setStatus("ANALYSIS_PENDING");
         scheduleRepository.save(entity);
         return true;
     }
+
 
     private void populateEntity(ScheduleEntity entity, Map<String, Object> input) {
         if (input.containsKey("title")) entity.setTitle((String) input.get("title"));
