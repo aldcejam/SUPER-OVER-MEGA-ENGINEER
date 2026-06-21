@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/supersys-relational-db
     username: postgres
-    password: postgres
+    password: postgresf
   jpa:
     hibernate:
       ddl-auto: update
