@@ -231,13 +231,14 @@ services:
   # EMPIRE MANAGER ERP
   # ============================================
 
-  empire-manager-erp:
+  project-analysis:
     build:
-      context: ./empire-manager-erp
+      context: ./project-analysis
       dockerfile: ../Dockerfile
-    container_name: supersys-empire-manager-erp
+    container_name: supersys-project-analysis
     ports:
       - "8083:8083"
+
     environment:
       <<: *common-env
       SPRING_PROFILES_ACTIVE: dev

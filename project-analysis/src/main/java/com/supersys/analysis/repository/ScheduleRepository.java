@@ -1,6 +1,6 @@
-package com.supersys.empire.repository;
+package com.supersys.analysis.repository;
 
-import com.supersys.empire.entity.ScheduleEntity;
+import com.supersys.analysis.entity.ScheduleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

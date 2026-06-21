@@ -1,4 +1,4 @@
-package com.supersys.empire.config;
+package com.supersys.analysis.config;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package com.supersys.empire.entity;
+package com.supersys.analysis.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;

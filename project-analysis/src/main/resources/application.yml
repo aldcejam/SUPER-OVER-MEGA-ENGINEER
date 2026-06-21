@@ -1,6 +1,7 @@
 spring:
   application:
-    name: empire-manager-erp
+    name: project-analysis
+
   profiles:
     active: dev
   config:

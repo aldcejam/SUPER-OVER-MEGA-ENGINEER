@@ -1,4 +1,4 @@
-package com.supersys.empire.entity;
+package com.supersys.analysis.entity;
 
 import java.io.Serializable;
 

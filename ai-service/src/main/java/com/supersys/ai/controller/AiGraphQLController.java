@@ -1,5 +1,8 @@
 package com.supersys.ai.controller;
 
+import com.supersys.ai.dto.ScheduleDto;
+import com.supersys.ai.dto.ScheduleAnalysisResponseDto;
+import com.supersys.ai.service.ScheduleAnalysisService;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -8,6 +11,7 @@ import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
@@ -19,18 +23,19 @@ public class AiGraphQLController {
 
     private final ChatModel chatModel;
     private final VectorStore vectorStore;
+    private final ScheduleAnalysisService scheduleAnalysisService;
 
     @Autowired
-    public AiGraphQLController(ChatModel chatModel, VectorStore vectorStore) {
+    public AiGraphQLController(ChatModel chatModel, VectorStore vectorStore, ScheduleAnalysisService scheduleAnalysisService) {
         this.chatModel = chatModel;
         this.vectorStore = vectorStore;
+        this.scheduleAnalysisService = scheduleAnalysisService;
     }
 
     @QueryMapping
-    public AiResponse askGemini(@Argument String prompt) {
+    public AiResponse askDeepSeek(@Argument String prompt) {
         String context = "";
         try {
-            // Perform vector similarity search on pgvector
             List<Document> similarDocuments = this.vectorStore.similaritySearch(
                     SearchRequest.builder()
                             .query(prompt)
@@ -60,5 +65,12 @@ public class AiGraphQLController {
         return new AiResponse(answer);
     }
 
+    @MutationMapping
+    public ScheduleAnalysisResponseDto analyzeSchedule(@Argument ScheduleDto schedule) {
+        return scheduleAnalysisService.analyze(schedule);
+    }
+
     public record AiResponse(String answer) {}
 }
+
+

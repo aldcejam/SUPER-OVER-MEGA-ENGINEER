@@ -1,7 +1,38 @@
 type Query {
-    askGemini(prompt: String!): AiResponse!
+    askDeepSeek(prompt: String!): AiResponse!
+}
+
+type Mutation {
+    analyzeSchedule(schedule: ScheduleInput!): ScheduleAnalysisResponse!
 }
 
 type AiResponse {
     answer: String!
 }
+
+input ScheduleInput {
+    id: ID
+    title: String!
+    startDate: String
+    endDate: String
+    status: String
+    details: String
+    steps: [ScheduleStepInput]
+}
+
+input ScheduleStepInput {
+    stepName: String!
+    description: String
+    sequence: Int
+    daysRequired: Int
+    completed: Boolean
+}
+
+type ScheduleAnalysisResponse {
+    status: String!
+    summary: String!
+    riskPoints: [String!]!
+    optimizationSuggestions: [String!]!
+    estimatedDurationDays: Int!
+}
+

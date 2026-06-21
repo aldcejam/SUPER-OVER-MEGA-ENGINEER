@@ -1,9 +1,9 @@
-package com.supersys.empire.controller;
+package com.supersys.analysis.controller;
 
-import com.supersys.empire.entity.ScheduleEntity;
-import com.supersys.empire.entity.ScheduleStep;
-import com.supersys.empire.messaging.ScheduleMessagingService;
-import com.supersys.empire.repository.ScheduleRepository;
+import com.supersys.analysis.entity.ScheduleEntity;
+import com.supersys.analysis.entity.ScheduleStep;
+import com.supersys.analysis.messaging.ScheduleMessagingService;
+import com.supersys.analysis.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;

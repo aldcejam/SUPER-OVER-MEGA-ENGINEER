@@ -12,10 +12,11 @@
     </parent>
 
     <groupId>com.supersys</groupId>
-    <artifactId>empire-manager-erp</artifactId>
+    <artifactId>project-analysis</artifactId>
     <version>1.0.0-RELEASE</version>
-    <name>empire-manager-erp</name>
-    <description>Empire Manager ERP - Serviço de Gestão de Construção</description>
+    <name>project-analysis</name>
+    <description>Project Analysis Service - Serviço de Análise de Projetos</description>
+
 
     <properties>
         <java.version>21</java.version>

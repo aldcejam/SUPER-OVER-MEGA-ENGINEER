@@ -14,12 +14,13 @@ spring:
             - Path=/ai/**
           filters:
             - StripPrefix=1
-        - id: empire-manager-erp-route
-          uri: lb://empire-manager-erp
+        - id: project-analysis-route
+          uri: lb://project-analysis
           predicates:
-            - Path=/empire/**
+            - Path=/project-analysis/**
           filters:
             - StripPrefix=1
+
 
 
 management:
