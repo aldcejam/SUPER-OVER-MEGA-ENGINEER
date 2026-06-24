@@ -21,6 +21,9 @@ FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
+# Copia o agente OTel se ele existir no contexto de build (opcional)
+COPY opentelemetry-javaagent.jar* /app/
+
 # Copia o JAR gerado do stage de build
 COPY --from=build /app/target/*.jar app.jar
 
