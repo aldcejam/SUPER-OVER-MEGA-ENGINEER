@@ -18,3 +18,22 @@ spring:
         table-name: vector_store
         dimension: 384
         initialize-schema: true
+
+resilience4j:
+  ratelimiter:
+    instances:
+      aiAnalysisLimiter:
+        limitForPeriod: 3
+        limitRefreshPeriod: 30s
+        timeoutDuration: 0s
+  circuitbreaker:
+    instances:
+      aiAnalysisBreaker:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 15s
+        permittedNumberOfCallsInHalfOpenState: 3
+        ignoreExceptions:
+          - io.github.resilience4j.ratelimiter.RequestNotPermitted
+
