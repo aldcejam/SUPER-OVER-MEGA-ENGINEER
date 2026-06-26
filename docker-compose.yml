@@ -203,9 +203,9 @@ services:
       SPRING_PROFILES_ACTIVE: dev
       SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
       GEMINI_API_KEY: ${GEMINI_API_KEY}
-      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL_VECTOR}
-      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME_VECTOR}
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD_VECTOR}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-vector:5432/supersys_vector_db
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_VECTOR_USER:-apm}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_VECTOR_PASSWORD:-super_password_2026}
       SPRING_CLOUD_AWS_CREDENTIALS_ACCESS_KEY: test
       SPRING_CLOUD_AWS_CREDENTIALS_SECRET_KEY: test
       SPRING_CLOUD_AWS_REGION_STATIC: us-east-1
@@ -321,6 +321,9 @@ services:
       - "9090:9090"
     networks:
       - supersys-net
+    profiles:
+      - otlp
+      - infra
 
   tempo:
     image: grafana/tempo:latest
@@ -381,7 +384,7 @@ services:
   # ============================================
 
   localstack:
-    image: localstack/localstack:latest
+    image: localstack/localstack:3.8.0
     container_name: supersys-localstack
     ports:
       - "4566:4566"

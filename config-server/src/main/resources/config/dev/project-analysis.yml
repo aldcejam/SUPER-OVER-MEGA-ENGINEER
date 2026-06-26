@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: empire-manager-erp
+    name: project-analysis
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgres:5432/supersys-relational-db}
     username: ${SPRING_DATASOURCE_USERNAME:postgres}
