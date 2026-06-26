@@ -1,6 +1,7 @@
 package com.supersys.analysis.config;
 
 import com.supersys.analysis.client.AiServiceClient;
+import com.supersys.analysis.client.AiLambdaServiceClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,4 +26,14 @@ public class ClientConfig {
 
         return factory.createClient(AiServiceClient.class);
     }
+
+    @Bean
+    public AiLambdaServiceClient aiLambdaServiceClient(RestClient.Builder builder) {
+        RestClient restClient = builder.baseUrl("http://lambda-service").build();
+        RestClientAdapter adapter = RestClientAdapter.create(restClient);
+        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
+
+        return factory.createClient(AiLambdaServiceClient.class);
+    }
 }
+

@@ -2,6 +2,7 @@ package com.supersys.analysis.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supersys.analysis.client.AiServiceClient;
+import com.supersys.analysis.client.AiLambdaServiceClient;
 import com.supersys.analysis.client.dto.*;
 import com.supersys.analysis.entity.ProjectEntity;
 import com.supersys.analysis.entity.ScheduleEntity;
@@ -17,6 +18,9 @@ public class AnalysisRestService {
 
     @Autowired
     private AiServiceClient aiServiceClient;
+
+    @Autowired
+    private AiLambdaServiceClient aiLambdaServiceClient;
 
     @Autowired
     private ObjectMapper objectMapper;

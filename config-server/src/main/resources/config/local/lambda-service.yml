@@ -1,0 +1,17 @@
+server:
+  port: 8086
+
+spring:
+  cloud:
+    function:
+      definition: lambdaService
+  datasource:
+    url: jdbc:postgresql://localhost:5433/supersys_vector_db
+    username: apm
+    password: super_password_2026
+  ai:
+    vectorstore:
+      pgvector:
+        table-name: vector_store
+        dimension: 384
+        initialize-schema: true

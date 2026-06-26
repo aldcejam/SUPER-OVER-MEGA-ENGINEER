@@ -14,12 +14,19 @@ spring:
             - Path=/ai/**
           filters:
             - StripPrefix=1
+        - id: lambda-service-route
+          uri: lb://lambda-service
+          predicates:
+            - Path=/lambda/**
+          filters:
+            - StripPrefix=1
         - id: project-analysis-route
           uri: lb://project-analysis
           predicates:
             - Path=/project-analysis/**
           filters:
             - StripPrefix=1
+
 
 
 management:
