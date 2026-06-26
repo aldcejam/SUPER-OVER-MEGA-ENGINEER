@@ -2,8 +2,6 @@
 # TEMPLATES (YAML Anchors)
 # ============================================
 x-common-env: &common-env
-  SPRING_RABBITMQ_HOST: rabbitmq
-  SPRING_RABBITMQ_PORT: 5672
   # Relational DB
   SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/supersys-relational-db
   SPRING_DATASOURCE_USERNAME: ${POSTGRES_RELATIONAL_USER:-postgres}
@@ -33,6 +31,9 @@ x-eureka-base: &eureka-base
     <<: *common-env
     SPRING_PROFILES_ACTIVE: dev
     SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
+  profiles: 
+    - discovery
+    - infra
 
 services:
 
@@ -58,6 +59,8 @@ services:
       retries: 5
     networks:
       - supersys-net
+    profiles:
+      - infra
 
   postgres-vector:
     image: pgvector/pgvector:pg16
@@ -77,20 +80,8 @@ services:
       retries: 5
     networks:
       - supersys-net
-
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: supersys-rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - supersys-net
+    profiles:
+      - infra
 
   # ============================================
   # CONFIG SERVER
@@ -111,6 +102,9 @@ services:
       start_period: 30s
     networks:
       - supersys-net
+    profiles:
+      - discovery
+      - infra
 
   # ============================================
   # EUREKA SERVERS (Service Discovery Cluster)
@@ -158,7 +152,6 @@ services:
       EUREKA_FETCH_REGISTRY: "true"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server-1:8761/eureka/,http://eureka-server-2:8761/eureka/
 
-
   # ============================================
   # API GATEWAY
   # ============================================
@@ -191,6 +184,8 @@ services:
       start_period: 40s
     networks:
       - supersys-net
+    profiles:
+      - domain
 
   # ============================================
   # AI SERVICE
@@ -222,10 +217,10 @@ services:
         condition: service_healthy
       postgres-vector:
         condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
     networks:
       - supersys-net
+    profiles:
+      - domain
 
   # ============================================
   # EMPIRE MANAGER ERP
@@ -260,10 +255,10 @@ services:
         condition: service_healthy
       postgres:
         condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
     networks:
       - supersys-net
+    profiles:
+      - domain
 
   # ============================================
   # OBSERVABILIDADE
@@ -280,6 +275,7 @@ services:
       - supersys-net
     profiles: 
       - otlp
+      - infra
 
   prometheus:
     image: prom/prometheus:latest
@@ -301,6 +297,7 @@ services:
       - supersys-net
     profiles: 
       - otlp
+      - infra
 
   grafana:
     image: grafana/grafana:latest
@@ -315,6 +312,7 @@ services:
       - supersys-net
     profiles: 
       - otlp
+      - infra
 
   loki:
     image: grafana/loki:latest
@@ -325,7 +323,8 @@ services:
       - supersys-net
     profiles: 
       - otlp
-    
+      - infra
+
   portainer:
     image: portainer/portainer-ce:latest
     container_name: supersys-portainer
@@ -338,6 +337,8 @@ services:
     restart: always
     networks:
       - supersys-net
+    profiles:
+      - infra
 
 volumes:
   pgdata_relational:
