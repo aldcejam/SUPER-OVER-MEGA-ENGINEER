@@ -204,6 +204,7 @@ services:
       SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
       GEMINI_API_KEY: ${GEMINI_API_KEY}
       DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY}
+      GITHUB_PERSONAL_ACCESS_TOKEN: ${GITHUB_PERSONAL_ACCESS_TOKEN}
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-vector:5432/supersys_vector_db
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_VECTOR_USER:-apm}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_VECTOR_PASSWORD:-super_password_2026}

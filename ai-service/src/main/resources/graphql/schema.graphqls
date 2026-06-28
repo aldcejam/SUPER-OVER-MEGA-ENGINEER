@@ -1,5 +1,6 @@
 type Query {
     askDeepSeek(prompt: String!): AiResponse!
+    askProjectQuestion(prompt: String!): AiResponse!
 }
 
 type Mutation {

@@ -3,6 +3,8 @@ package com.supersys.ai.controller;
 import com.supersys.ai.dto.ScheduleDto;
 import com.supersys.ai.dto.ScheduleAnalysisResponseDto;
 import com.supersys.ai.service.ScheduleAnalysisService;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -24,12 +26,31 @@ public class AiGraphQLController {
     private final ChatModel chatModel;
     private final VectorStore vectorStore;
     private final ScheduleAnalysisService scheduleAnalysisService;
+    private final ChatClient chatClient;
+    private final List<ToolCallbackProvider> toolProviders;
 
     @Autowired
-    public AiGraphQLController(ChatModel chatModel, VectorStore vectorStore, ScheduleAnalysisService scheduleAnalysisService) {
+    public AiGraphQLController(ChatModel chatModel, VectorStore vectorStore, ScheduleAnalysisService scheduleAnalysisService, ChatClient.Builder chatClientBuilder, @Autowired(required = false) List<ToolCallbackProvider> toolProviders) {
         this.chatModel = chatModel;
         this.vectorStore = vectorStore;
         this.scheduleAnalysisService = scheduleAnalysisService;
+        this.chatClient = chatClientBuilder.build();
+        this.toolProviders = toolProviders != null ? toolProviders : List.of();
+    }
+
+    @QueryMapping
+    public AiResponse askProjectQuestion(@Argument String prompt) {
+        String systemPrompt = "Você é um assistente de desenvolvimento sênior respondendo a perguntas sobre o projeto." +
+                              " Você deve utilizar as ferramentas do GitHub (GitHub MCP tools) disponíveis para buscar informações no repositório ou responder à pergunta do usuário.";
+        
+        String answer = this.chatClient.prompt()
+                .system(systemPrompt)
+                .user(prompt)
+                .tools(toolProviders.toArray(new ToolCallbackProvider[0]))
+                .call()
+                .content();
+
+        return new AiResponse(answer);
     }
 
     @QueryMapping
