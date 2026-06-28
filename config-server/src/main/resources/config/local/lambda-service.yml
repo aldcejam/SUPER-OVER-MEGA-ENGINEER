@@ -15,3 +15,9 @@ spring:
         table-name: vector_store
         dimension: 384
         initialize-schema: true
+
+services:
+  ai-service:
+    url: ${AI_SERVICE_URL:http://localhost:8082}
+  lambda-service:
+    url: ${LAMBDA_SERVICE_URL:http://localhost:8086}

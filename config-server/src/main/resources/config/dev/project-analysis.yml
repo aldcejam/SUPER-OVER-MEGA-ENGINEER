@@ -11,7 +11,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     show-sql: true
     properties:
       hibernate:
@@ -21,6 +21,12 @@ spring:
       enabled: true
       path: /graphiql
 
+
+services:
+  ai-service:
+    url: ${AI_SERVICE_URL:http://ai-service:8082}
+  lambda-service:
+    url: ${LAMBDA_SERVICE_URL:http://lambda-service:8080}
 
 management:
   endpoints:

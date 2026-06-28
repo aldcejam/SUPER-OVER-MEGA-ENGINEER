@@ -40,16 +40,17 @@ public class ScheduleAnalysisService {
 
         String promptMessage = String.format(
                 "Você é o assistente virtual da arquitetura distribuída SUPER-SYS.\n" +
-                "Analise o seguinte cronograma recebido de project-analysis:\n\n" +
-                "ID: %s\n" +
-                "Título: %s\n" +
-                "Data de Início: %s\n" +
-                "Data de Fim: %s\n" +
-                "Status Atual: %s\n" +
-                "Detalhes: %s\n\n" +
-                "Etapas/Passos:\n%s\n\n" +
-                "Gere uma análise detalhada contendo status, resumo, pontos de risco identificados, sugestões de otimização e a duração estimada em dias.\n" +
-                "A sua resposta deve seguir RIGOROSAMENTE o seguinte formato de saída:\n%s\n",
+                        "Analise o seguinte cronograma recebido de project-analysis:\n\n" +
+                        "ID: %s\n" +
+                        "Título: %s\n" +
+                        "Data de Início: %s\n" +
+                        "Data de Fim: %s\n" +
+                        "Status Atual: %s\n" +
+                        "Detalhes: %s\n\n" +
+                        "Etapas/Passos:\n%s\n\n" +
+                        "Gere uma análise detalhada contendo status, resumo, pontos de risco identificados, sugestões de otimização e a duração estimada em dias.\n"
+                        +
+                        "A sua resposta deve seguir RIGOROSAMENTE o seguinte formato de saída:\n%s\n",
                 schedule.id() != null ? schedule.id() : "N/A",
                 schedule.title(),
                 schedule.startDate() != null ? schedule.startDate() : "N/A",
@@ -57,8 +58,7 @@ public class ScheduleAnalysisService {
                 schedule.status() != null ? schedule.status() : "N/A",
                 schedule.details() != null ? schedule.details() : "N/A",
                 stepsString,
-                outputConverter.getFormat()
-        );
+                outputConverter.getFormat());
 
         ChatResponse chatResponse = this.chatModel.call(new Prompt(promptMessage));
         String responseText = chatResponse.getResult().getOutput().getText();
@@ -78,29 +78,29 @@ public class ScheduleAnalysisService {
                                 step.stepName(), step.sequence(), step.daysRequired(), step.completed()))
                         .collect(Collectors.joining("\n"));
             }
-            scheduleInfo = String.format("Título: %s\nDetalhes: %s\nPassos:\n%s", 
+            scheduleInfo = String.format("Título: %s\nDetalhes: %s\nPassos:\n%s",
                     project.schedule().title(), project.schedule().details(), stepsString);
         }
 
         String promptMessage = String.format(
                 "Você é o assistente virtual da arquitetura distribuída SUPER-SYS.\n" +
-                "Analise a viabilidade e escopo do seguinte projeto:\n\n" +
-                "ID: %s\n" +
-                "Nome do Projeto: %s\n" +
-                "Descrição: %s\n" +
-                "Orçamento: R$ %.2f\n" +
-                "Status: %s\n\n" +
-                "Cronograma Relacionado:\n%s\n\n" +
-                "Gere uma análise detalhada contendo nota de viabilidade geral (Alta/Média/Baixa), riscos de orçamento/estouro de custos, resumo da viabilidade e recomendações estratégicas.\n" +
-                "A sua resposta deve seguir RIGOROSAMENTE o seguinte formato de saída:\n%s\n",
+                        "Analise a viabilidade e escopo do seguinte projeto:\n\n" +
+                        "ID: %s\n" +
+                        "Nome do Projeto: %s\n" +
+                        "Descrição: %s\n" +
+                        "Orçamento: R$ %.2f\n" +
+                        "Status: %s\n\n" +
+                        "Cronograma Relacionado:\n%s\n\n" +
+                        "Gere uma análise detalhada contendo nota de viabilidade geral (Alta/Média/Baixa), riscos de orçamento/estouro de custos, resumo da viabilidade e recomendações estratégicas.\n"
+                        +
+                        "A sua resposta deve seguir RIGOROSAMENTE o seguinte formato de saída:\n%s\n",
                 project.id() != null ? project.id() : "N/A",
                 project.name(),
                 project.description() != null ? project.description() : "N/A",
                 project.budget() != null ? project.budget() : 0.0,
                 project.status() != null ? project.status() : "N/A",
                 scheduleInfo,
-                outputConverter.getFormat()
-        );
+                outputConverter.getFormat());
 
         ChatResponse chatResponse = this.chatModel.call(new Prompt(promptMessage));
         String responseText = chatResponse.getResult().getOutput().getText();
@@ -114,26 +114,29 @@ public class ScheduleAnalysisService {
         String allocationsString = "Nenhum recurso alocado.";
         if (project.allocations() != null && !project.allocations().isEmpty()) {
             allocationsString = project.allocations().stream()
-                    .map(alloc -> String.format("- Recurso: %s | Cargo/Função: %s | Horas/Semana: %d | Custo/Hora: R$ %.2f | Qtd: %d",
-                            alloc.resourceName(), alloc.role(), alloc.hoursPerWeek(), alloc.costPerHour(), alloc.quantity()))
+                    .map(alloc -> String.format(
+                            "- Recurso: %s | Cargo/Função: %s | Horas/Semana: %d | Custo/Hora: R$ %.2f | Qtd: %d",
+                            alloc.resourceName(), alloc.role(), alloc.hoursPerWeek(), alloc.costPerHour(),
+                            alloc.quantity()))
                     .collect(Collectors.joining("\n"));
         }
 
         String promptMessage = String.format(
                 "Você é o assistente virtual da arquitetura distribuída SUPER-SYS.\n" +
-                "Analise as alocações de equipe e identifique possíveis gargalos e sobrecargas no seguinte projeto:\n\n" +
-                "ID: %s\n" +
-                "Nome do Projeto: %s\n" +
-                "Orçamento: R$ %.2f\n\n" +
-                "Recursos Alocados:\n%s\n\n" +
-                "Gere uma análise de alocação de recursos contendo taxa de utilização geral da equipe, gargalos/cargos sobrecarregados detectados, eficiência de custos e sugestões para otimizar a distribuição do trabalho.\n" +
-                "A sua resposta deve seguir RIGOROSAMENTE o seguinte formato de saída:\n%s\n",
+                        "Analise as alocações de equipe e identifique possíveis gargalos e sobrecargas no seguinte projeto:\n\n"
+                        +
+                        "ID: %s\n" +
+                        "Nome do Projeto: %s\n" +
+                        "Orçamento: R$ %.2f\n\n" +
+                        "Recursos Alocados:\n%s\n\n" +
+                        "Gere uma análise de alocação de recursos contendo taxa de utilização geral da equipe, gargalos/cargos sobrecarregados detectados, eficiência de custos e sugestões para otimizar a distribuição do trabalho.\n"
+                        +
+                        "A sua resposta deve seguir RIGOROSAMENTE o seguinte formato de saída:\n%s\n",
                 project.id() != null ? project.id() : "N/A",
                 project.name(),
                 project.budget() != null ? project.budget() : 0.0,
                 allocationsString,
-                outputConverter.getFormat()
-        );
+                outputConverter.getFormat());
 
         ChatResponse chatResponse = this.chatModel.call(new Prompt(promptMessage));
         String responseText = chatResponse.getResult().getOutput().getText();
@@ -141,4 +144,3 @@ public class ScheduleAnalysisService {
         return outputConverter.convert(responseText);
     }
 }
-
