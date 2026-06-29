@@ -295,6 +295,10 @@ services:
       OTEL_METRICS_EXPORTER: "otlp"
       OTEL_TRACES_EXPORTER: "otlp"
       OTEL_LOGS_EXPORTER: "otlp"
+      SPRING_CLOUD_AWS_CREDENTIALS_ACCESS_KEY: test
+      SPRING_CLOUD_AWS_CREDENTIALS_SECRET_KEY: test
+      SPRING_CLOUD_AWS_REGION_STATIC: us-east-1
+      SPRING_CLOUD_AWS_S3_ENDPOINT: http://supersys-localstack:4566
     depends_on:
       config-server:
         condition: service_healthy

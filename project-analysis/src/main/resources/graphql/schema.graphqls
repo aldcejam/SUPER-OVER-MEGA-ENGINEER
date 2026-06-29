@@ -39,6 +39,8 @@ type Query {
     findScheduleById(id: ID!): Schedule
     findAllProjects: [Project]
     findProjectById(id: ID!): Project
+    listS3Files: [String]
+    downloadS3File(filename: String!): String
 }
 
 type Mutation {

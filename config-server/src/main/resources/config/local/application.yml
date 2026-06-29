@@ -2,6 +2,10 @@ spring:
   rabbitmq:
     host: localhost
     port: 5672
+  cloud:
+    aws:
+      s3:
+        path-style-access-enabled: true
 
 eureka:
   client:
