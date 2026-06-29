@@ -34,9 +34,21 @@ http://localhost:8761
 
 ---
 
-### 2. ai-service (REST API - Porta 8082)
+### 2. ai-service (REST & GraphQL API - Porta 8082)
 
 #### Endpoints REST (POST)
 * **`POST /api/ai/analyze-schedule`**: Recebe o payload do cronograma e retorna um JSON padronizado (`ScheduleAnalysisResponse`) com status, estimativa de dias e riscos.
 * **`POST /api/ai/analyze-project`**: Recebe o payload do projeto (com cronograma associado) e retorna um JSON padronizado (`ProjectAnalysisResponse`) com nota de viabilidade e riscos financeiros.
 * **`POST /api/ai/analyze-resources`**: Recebe o payload do projeto (com suas alocações de recursos) e retorna um JSON padronizado (`ResourceAnalysisResponse`) identificando sobrecargas de equipe e gargalos.
+
+#### API GraphQL (Queries & Mutations)
+* **`Query: askProjectQuestion(prompt)`**: Assistente de desenvolvimento que utiliza ferramentas do GitHub (via MCP) para buscar informações no repositório `aldcejam/SUPER-OVER-MEGA-ENGINEER`.
+* **`Query: askDeepSeek(prompt)`**: Assistente enriquecido com busca semântica (RAG) utilizando a base de vetores `pgvector`.
+* **`Mutation: analyzeSchedule(schedule)`**: Realiza a análise de cronograma (mesma funcionalidade da rota REST `/api/ai/analyze-schedule`).
+
+---
+
+### 3. Observabilidade e Portas de Infraestrutura
+* **Grafana (Porta 3000)**: Visualização de Dashboards (Dashboard global JVM & Resilience4j Circuit Breaker).
+* **Prometheus (Porta 9090)**: Coleta e armazenamento de métricas.
+* **Métricas do Actuator**: Disponíveis em `/actuator/prometheus` em todos os microsserviços (ex: `http://localhost:8082/actuator/prometheus`).

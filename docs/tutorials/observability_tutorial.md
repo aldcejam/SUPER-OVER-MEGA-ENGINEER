@@ -206,55 +206,118 @@ datasources:
 
 ---
 
-## 🚀 Passo 3: Instrumentando sua Aplicação Spring Boot
+## 🚀 Passo 3: Instrumentando suas Aplicações Java
 
-Para que sua aplicação gere dados, ela precisa do **OpenTelemetry Java Agent**. Baixe a última versão do `opentelemetry-javaagent.jar` (do GitHub oficial) e salve no seu projeto.
+Para coletar telemetria das suas aplicações, temos duas abordagens principais implementadas neste projeto. **Elas não são excludentes; na verdade, elas se complementam e podem (e devem) ser usadas simultaneamente na mesma aplicação** dependendo do objetivo:
 
-Você pode rodar sua aplicação de duas formas:
+1. **Abordagem A: OpenTelemetry Java Agent** (Foco em Rastreabilidade/Traces, Logs do Sistema e Métricas Gerais da JVM).
+2. **Abordagem B: Spring Boot Actuator + Micrometer** (Foco em métricas específicas de Frameworks e Resiliência, como o estado dos Circuit Breakers e Rate Limiters do Resilience4j).
 
-### Opção A: Rodando Localmente pela IDE (IntelliJ / Eclipse)
-Configure o Run/Debug da sua aplicação passando as opções da máquina virtual (VM Options) e as variáveis de ambiente.
+---
 
-1. **VM Options**: 
-   `-javaagent:/caminho/absoluto/na/sua/maquina/opentelemetry-javaagent.jar`
-2. **Environment Variables**:
-   `OTEL_SERVICE_NAME=meu-microservico`
-   `OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318` *(Aponta para localhost porque o Docker exportou essa porta)*
-   `OTEL_METRICS_EXPORTER=otlp`
-   `OTEL_TRACES_EXPORTER=otlp`
-   `OTEL_LOGS_EXPORTER=otlp`
+### 📋 Comparativo: Quando usar cada uma?
 
-### Opção B: Rodando no Docker (via Dockerfile)
+| Funcionalidade | Abordagem A (OTel Java Agent) | Abordagem B (Actuator + Micrometer) |
+| :--- | :--- | :--- |
+| **Traces (Rastreabilidade)** | **Sim** (Excelente, gera spans automáticos das requisições e DB). | Não. |
+| **Logs correlacionados** | **Sim** (Injeta `trace_id` automaticamente nos logs enviados ao Loki). | Não. |
+| **Métricas Gerais JVM/Sistema** | Sim (Coleta automática de CPU/Memória/Threads). | Sim (Exige dependência no pom.xml). |
+| **Métricas de Resiliência (Resilience4j)**| Não nativo/incompleto. | **Sim** (Exporta estados precisos dos Circuit Breakers/Rate Limiters). |
+| **Facilidade de Setup** | Zero código: adicionado na inicialização da VM do Java. | Requer dependências no `pom.xml` e alteração no `application.yml`. |
 
-A forma mais limpa de injetar o agente sem quebrar aplicações que não o utilizam é usar um curinga na cópia do Dockerfile e habilitá-lo via variáveis de ambiente no Compose.
+---
 
-**No seu `Dockerfile` genérico:**
+### 🛠️ Abordagem A: Configurando o OpenTelemetry Java Agent
+
+O agente roda acoplado ao processo Java, interceptando chamadas do Spring e gerando telemetria sem alterações no seu código.
+
+#### 1. Download do Agente
+Baixe a última versão estável do `opentelemetry-javaagent.jar` do repositório oficial da OpenTelemetry no GitHub e coloque no diretório do seu microserviço.
+
+#### 2. Execução Local (na IDE)
+Nas configurações de Run/Debug da sua IDE, adicione os seguintes parâmetros:
+* **VM Options (Parâmetros de Inicialização):**
+  ```bash
+  -javaagent:/caminho/para/opentelemetry-javaagent.jar
+  ```
+* **Variáveis de Ambiente (Environment Variables):**
+  ```properties
+  OTEL_SERVICE_NAME=nome-do-seu-servico
+  OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+  OTEL_METRICS_EXPORTER=otlp
+  OTEL_TRACES_EXPORTER=otlp
+  OTEL_LOGS_EXPORTER=otlp
+  ```
+
+#### 3. Execução via Docker (Produção/Ambientes isolados)
+Adicione o agente no `Dockerfile` e declare as variáveis de ambiente no `docker-compose.yml`.
+
+**No `Dockerfile`:**
 ```dockerfile
-# O curinga (*) faz a cópia ser opcional. 
-# Se o jar estiver na pasta do contexto do serviço, ele copia. Senão, ignora e o build não falha.
+# Copia o agente Java OTel opcionalmente se ele existir no contexto de build
 COPY opentelemetry-javaagent.jar* /app/
-
 ENTRYPOINT ["java", "-jar", "app.jar"]
 ```
 
-**No seu `docker-compose.yml` (para o microserviço):**
+**No `docker-compose.yml`:**
 ```yaml
-  meu-microservico:
+  meu-servico:
     build:
-      context: ./pasta-do-servico
+      context: ./caminho-do-servico
       dockerfile: ../Dockerfile
     environment:
-      # O Java nativamente lê a variável JAVA_TOOL_OPTIONS e injeta no comando de inicialização!
       JAVA_TOOL_OPTIONS: "-javaagent:/app/opentelemetry-javaagent.jar"
-      OTEL_SERVICE_NAME: "meu-microservico"
-      OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4318" # Aqui usamos o nome do container
+      OTEL_SERVICE_NAME: "meu-servico"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4318"
       OTEL_METRICS_EXPORTER: "otlp"
       OTEL_TRACES_EXPORTER: "otlp"
       OTEL_LOGS_EXPORTER: "otlp"
 ```
-*(Não esqueça de colocar o arquivo `opentelemetry-javaagent.jar` na pasta `./pasta-do-servico` para o Dockerfile conseguir copiá-lo).*
 
 ---
+
+### 📊 Abordagem B: Configurando Actuator + Micrometer (Para Circuit Breakers/Resilience4j)
+
+Ideal para extrair métricas ricas de bibliotecas de resiliência e banco de dados que expõem coletores internos via Micrometer.
+
+#### 1. Adicionar Dependências no `pom.xml`
+Insira o Actuator do Spring e a ponte de exportação do Prometheus:
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+<dependency>
+    <groupId>io.micrometer</groupId>
+    <artifactId>micrometer-registry-prometheus</artifactId>
+    <scope>runtime</scope>
+</dependency>
+```
+
+#### 2. Configurar o `application.yml`
+Exponha o endpoint `/actuator/prometheus` e defina a tag `application` para que o Prometheus e os Dashboards do Grafana agrupem os dados corretamente:
+```yaml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info
+  metrics:
+    tags:
+      application: ${spring.application.name}
+```
+
+#### 3. Adicionar Scrape Target no Prometheus (`prometheus.yml`)
+Como essa abordagem expõe um endpoint HTTP diretamente na porta do seu microsserviço, adicione um job no Prometheus apontando diretamente para ela:
+```yaml
+  - job_name: 'ai-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['ai-service:8082']
+```
+
+---
+
 
 ## 🎉 Testando
 1. Suba os containers da observabilidade (`docker compose up -d`).

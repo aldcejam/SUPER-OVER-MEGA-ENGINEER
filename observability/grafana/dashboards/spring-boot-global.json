@@ -3113,7 +3113,79 @@
         "y": 100
       },
       "id": 99999,
-      "panels": [],
+      "panels": [
+        {
+          "type": "stat",
+          "title": "Circuit Breaker State",
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 101
+          },
+          "targets": [
+            {
+              "expr": "resilience4j_circuitbreaker_state{application=\"$application\"}",
+              "legendFormat": "{{name}} - {{state}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 1
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "type": "timeseries",
+          "title": "Circuit Breaker Calls (Rate)",
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 101
+          },
+          "targets": [
+            {
+              "expr": "rate(resilience4j_circuitbreaker_calls_seconds_count{application=\"$application\"}[1m])",
+              "legendFormat": "{{name}} - {{kind}}",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "type": "stat",
+          "title": "Rate Limiter Available Permissions",
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 101
+          },
+          "targets": [
+            {
+              "expr": "resilience4j_ratelimiter_available_permissions{application=\"$application\"}",
+              "legendFormat": "{{name}}",
+              "refId": "A"
+            }
+          ]
+        }
+      ],
       "title": "Circuit Breaker (Resilience4j)",
       "type": "row"
     }
