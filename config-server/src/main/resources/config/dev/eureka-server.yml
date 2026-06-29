@@ -5,13 +5,19 @@ eureka:
   instance:
     hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
     preferIpAddress: false
+    lease-renewal-interval-in-seconds: 1
+    lease-expiration-duration-in-seconds: 2
   client:
     registerWithEureka: true
     fetchRegistry: true
+    registry-fetch-interval-seconds: 1
     serviceUrl:
       defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
   server:
     waitTimeInMsWhenSyncEmpty: 0
+    enable-self-preservation: false
+    eviction-interval-timer-in-ms: 1000
+    response-cache-update-interval-ms: 1000
 
 management:
   endpoints:

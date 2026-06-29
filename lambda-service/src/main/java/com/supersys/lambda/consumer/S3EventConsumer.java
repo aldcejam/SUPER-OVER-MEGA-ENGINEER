@@ -15,8 +15,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 import java.nio.charset.StandardCharsets;
 
 @Service
@@ -41,7 +39,7 @@ public class S3EventConsumer {
                         String bucketName = record.get("s3").get("bucket").get("name").asText();
                         String objectKey = record.get("s3").get("object").get("key").asText();
                         
-                        processZipFromS3(bucketName, objectKey);
+                        processFileFromS3(bucketName, objectKey);
                     }
                 }
             } else if (rootNode.has("Message")) {
@@ -50,7 +48,7 @@ public class S3EventConsumer {
                     for (JsonNode record : snsMessage.get("Records")) {
                         String bucketName = record.get("s3").get("bucket").get("name").asText();
                         String objectKey = record.get("s3").get("object").get("key").asText();
-                        processZipFromS3(bucketName, objectKey);
+                        processFileFromS3(bucketName, objectKey);
                     }
                 }
             }
@@ -60,7 +58,12 @@ public class S3EventConsumer {
         }
     }
 
-    private void processZipFromS3(String bucketName, String objectKey) {
+    private void processFileFromS3(String bucketName, String objectKey) {
+        if (!objectKey.endsWith(".md")) {
+            System.out.println("Arquivo ignorado (nao eh .md): " + objectKey);
+            return;
+        }
+
         System.out.println("Baixando arquivo do S3: " + bucketName + "/" + objectKey);
         
         try {
@@ -76,27 +79,18 @@ public class S3EventConsumer {
                 .key(objectKey)
                 .build();
             
-            try (InputStream s3InputStream = s3Client.getObject(getRequest);
-                 ZipInputStream zis = new ZipInputStream(s3InputStream)) {
+            try (InputStream s3InputStream = s3Client.getObject(getRequest)) {
                 
-                ZipEntry entry;
-                String markdownContent = null;
-                while ((entry = zis.getNextEntry()) != null) {
-                    if (entry.getName().endsWith(".md")) {
-                        byte[] bytes = zis.readAllBytes();
-                        markdownContent = new String(bytes, StandardCharsets.UTF_8);
-                        break;
-                    }
-                    zis.closeEntry();
-                }
+                byte[] bytes = s3InputStream.readAllBytes();
+                String markdownContent = new String(bytes, StandardCharsets.UTF_8);
                 
-                if (markdownContent != null) {
-                    String docId = objectKey.replace(".zip", "");
+                if (markdownContent != null && !markdownContent.trim().isEmpty()) {
+                    String docId = objectKey.replace(".md", "");
                     Document aiDoc = new Document(
                         docId,
                         markdownContent,
                         Map.of(
-                            "source", "s3-deep-analysis",
+                            "source", metadata.getOrDefault("source", "s3-deep-analysis"),
                             "bucket", bucketName,
                             "key", objectKey,
                             "timestamp", System.currentTimeMillis(),
@@ -105,13 +99,13 @@ public class S3EventConsumer {
                     );
                     
                     vectorStore.add(List.of(aiDoc));
-                    System.out.println("Documento " + docId + " extraido do ZIP e inserido no pgvector com sucesso!");
+                    System.out.println("Documento " + docId + " extraido do S3 e inserido no pgvector com sucesso!");
                 } else {
-                    System.err.println("Nenhum arquivo .md encontrado no ZIP " + objectKey);
+                    System.err.println("Conteudo vazio no arquivo " + objectKey);
                 }
             }
         } catch (Exception e) {
-            System.err.println("Erro ao baixar ou processar ZIP do S3: " + e.getMessage());
+            System.err.println("Erro ao baixar ou processar arquivo do S3: " + e.getMessage());
             e.printStackTrace();
         }
     }

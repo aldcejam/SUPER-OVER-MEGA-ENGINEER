@@ -13,7 +13,10 @@ http://localhost:8761
 
 ## Mapeamento de Métodos e Endpoints
 
-### 1. project-analysis (GraphQL API - Porta 8083)
+### 1. project-analysis (REST & GraphQL API - Porta 8083)
+
+#### Endpoints REST (POST)
+* **`POST /api/documents/upload-pdf`**: Recebe um arquivo PDF (multipart/form-data) e um booleano `deepAnalysis`. Redireciona o arquivo para análise rasa via `lambda-service` (que extrai texto bruto localmente) ou para análise profunda via `ai-service` (usando modelos de IA), salvando o texto convertido como Markdown no bucket S3.
 
 #### Queries (Consultas)
 * **`findAllProjects`**: Retorna a lista de todos os projetos cadastrados.

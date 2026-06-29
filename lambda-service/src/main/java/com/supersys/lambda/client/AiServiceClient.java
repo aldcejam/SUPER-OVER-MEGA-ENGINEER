@@ -1,6 +1,7 @@
 package com.supersys.lambda.client;
 
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.annotation.PostExchange;
 
@@ -8,5 +9,5 @@ import org.springframework.web.service.annotation.PostExchange;
 public interface AiServiceClient {
 
     @PostExchange(value = "/deep-extract", contentType = "application/pdf")
-    void extractPdfContent(@RequestBody byte[] pdfBytes);
+    void extractPdfContent(@RequestBody byte[] pdfBytes, @RequestHeader("documentId") String documentId);
 }

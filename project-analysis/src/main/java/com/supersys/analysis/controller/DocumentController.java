@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/documents")
@@ -26,8 +27,9 @@ public class DocumentController {
 
         try {
             byte[] pdfBytes = file.getBytes();
-            String response = lambdaClient.uploadPdf(pdfBytes, deepAnalysis);
-            return ResponseEntity.ok(response);
+            String documentId = UUID.randomUUID().toString();
+            String response = lambdaClient.uploadPdf(pdfBytes, deepAnalysis, documentId);
+            return ResponseEntity.ok("Document ID: " + documentId + "\n" + response);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().body("Erro ao processar PDF: " + e.getMessage());

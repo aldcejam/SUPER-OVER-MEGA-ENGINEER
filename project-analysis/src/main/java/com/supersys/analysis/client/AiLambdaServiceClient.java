@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public interface AiLambdaServiceClient {
 
     @PostExchange("/lambdaService")
-    String uploadPdf(@RequestBody byte[] pdfBytes, @RequestHeader("deepAnalysis") boolean deepAnalysis);
+    String uploadPdf(@RequestBody byte[] pdfBytes, @RequestHeader("deepAnalysis") boolean deepAnalysis, @RequestHeader("documentId") String documentId);
 }

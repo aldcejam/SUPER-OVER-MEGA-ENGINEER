@@ -1,5 +1,11 @@
 package com.supersys.ai.service;
 
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
+import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -7,12 +13,9 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
-import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.UUID;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 @Service
 public class DeepSeekExtractionService {
@@ -20,52 +23,60 @@ public class DeepSeekExtractionService {
     @Autowired
     private S3Client s3Client;
 
+    @Autowired
+    private ChatModel chatModel;
+
     private static final String BUCKET_NAME = "pdf-extractions";
 
     @Async
-    public void processPdf(byte[] pdfBytes) {
+    public void processPdf(byte[] pdfBytes, String documentId) {
         try {
-            System.out.println("Iniciando analise profunda (simulada) do PDF via DeepSeek...");
+            System.out.println("Iniciando analise profunda real do PDF via IA...");
+            String docId = (documentId != null && !documentId.trim().isEmpty()) ? documentId : UUID.randomUUID().toString();
             
-            Thread.sleep(3000);
-            
-            String markdownContent = """
-                # Analise Profunda
-                
-                Este documento foi processado pela nossa integracao DeepSeek.
-                Ele contem referencias a dados complexos extraidos.
-                
-                ![Diagrama 1](diagrama1.png)
-                """;
-                
-            byte[] fakeImageBytes = "conteudo da imagem fake".getBytes(StandardCharsets.UTF_8);
-            
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            try (ZipOutputStream zos = new ZipOutputStream(baos)) {
-                zos.putNextEntry(new ZipEntry("conteudo.md"));
-                zos.write(markdownContent.getBytes(StandardCharsets.UTF_8));
-                zos.closeEntry();
-                
-                zos.putNextEntry(new ZipEntry("diagrama1.png"));
-                zos.write(fakeImageBytes);
-                zos.closeEntry();
+            // 1. Extrair texto bruto usando PDFBox
+            String rawText;
+            try (PDDocument document = Loader.loadPDF(pdfBytes)) {
+                PDFTextStripper stripper = new PDFTextStripper();
+                rawText = stripper.getText(document);
             }
-            byte[] zipBytes = baos.toByteArray();
             
-            String objectKey = UUID.randomUUID().toString() + ".zip";
+            if (rawText == null || rawText.trim().isEmpty()) {
+                throw new RuntimeException("O texto extraido do PDF esta vazio ou o arquivo e uma imagem.");
+            }
+
+            // 2. Chamar IA para analise profunda
+            String promptMessage = String.format(
+                "Voce e o especialista de analise do sistema SUPER-SYS.\n" +
+                "Analise o seguinte conteudo extraido de um documento e gere um relatorio completo formatado em Markdown, " +
+                "destacando as principais entidades, decisoes, riscos e um resumo executivo.\n\n" +
+                "Conteudo do Documento:\n%s",
+                rawText
+            );
+
+            ChatResponse chatResponse = chatModel.call(new Prompt(promptMessage));
+            String markdownContent = chatResponse.getResult().getOutput().getText();
+            
+            // Prepend metadata
+            String finalContent = String.format("# Analise Profunda (ID: %s)\n\n%s", docId, markdownContent);
+                
+            // 3. Salvar no S3
+            byte[] mdBytes = finalContent.getBytes(StandardCharsets.UTF_8);
+            String objectKey = docId + ".md";
             
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(BUCKET_NAME)
                 .key(objectKey)
                 .metadata(Map.of(
-                    "description", "Analise de PDF DeepSeek",
-                    "original_size", String.valueOf(pdfBytes.length)
+                    "description", "Analise de PDF Profunda via IA",
+                    "original_size", String.valueOf(pdfBytes.length),
+                    "source", "ai-service-chatmodel"
                 ))
                 .build();
                 
-            s3Client.putObject(putObjectRequest, RequestBody.fromBytes(zipBytes));
+            s3Client.putObject(putObjectRequest, RequestBody.fromBytes(mdBytes));
             
-            System.out.println("Processamento concluido. ZIP " + objectKey + " enviado para o S3.");
+            System.out.println("Processamento IA concluido. MD " + objectKey + " enviado para o S3.");
             
         } catch (Exception e) {
             System.err.println("Erro durante a analise do PDF: " + e.getMessage());

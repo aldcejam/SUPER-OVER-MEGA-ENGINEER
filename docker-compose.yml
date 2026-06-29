@@ -100,6 +100,11 @@ services:
       timeout: 5s
       retries: 10
       start_period: 30s
+    environment:
+      SPRING_PROFILES_ACTIVE: native
+      SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS: file:/app/config/{profile}
+    volumes:
+      - ./config-server/src/main/resources/config:/app/config
     networks:
       - supersys-net
     profiles:
@@ -249,6 +254,9 @@ services:
       SPRING_CLOUD_AWS_REGION_STATIC: us-east-1
       SPRING_CLOUD_AWS_SQS_ENDPOINT: http://supersys-localstack:4566
       SPRING_CLOUD_AWS_S3_ENDPOINT: http://supersys-localstack:4566
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-vector:5432/supersys_vector_db
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_VECTOR_USER:-apm}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_VECTOR_PASSWORD:-super_password_2026}
     depends_on:
       config-server:
         condition: service_healthy
