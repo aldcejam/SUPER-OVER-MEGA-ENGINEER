@@ -11,3 +11,12 @@ spring:
           uri: https://github.com/aldcejam/SUPER-OVER-MEGA-ENGINEER.git
           search-paths: "config-server/src/main/resources/config/{profile}"
           clone-on-start: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    tags:
+      application: ${spring.application.name:config-server}

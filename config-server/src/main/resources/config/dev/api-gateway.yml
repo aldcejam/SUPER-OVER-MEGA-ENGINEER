@@ -37,3 +37,6 @@ management:
   endpoint:
     gateway:
       enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name:api-gateway}
