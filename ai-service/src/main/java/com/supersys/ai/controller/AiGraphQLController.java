@@ -5,6 +5,7 @@ import com.supersys.ai.dto.ScheduleAnalysisResponseDto;
 import com.supersys.ai.service.ScheduleAnalysisService;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.tool.ToolCallbackProvider;
+import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -18,6 +19,7 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @Controller
@@ -41,12 +43,17 @@ public class AiGraphQLController {
     @QueryMapping
     public AiResponse askProjectQuestion(@Argument String prompt) {
         String systemPrompt = "Você é um assistente de desenvolvimento sênior respondendo a perguntas sobre o projeto." +
+                              " O repositório deste projeto no GitHub é 'aldcejam/SUPER-OVER-MEGA-ENGINEER'." +
                               " Você deve utilizar as ferramentas do GitHub (GitHub MCP tools) disponíveis para buscar informações no repositório ou responder à pergunta do usuário.";
         
+        ToolCallback[] callbacks = toolProviders.stream()
+                .flatMap(p -> Arrays.stream(p.getToolCallbacks()))
+                .toArray(ToolCallback[]::new);
+
         String answer = this.chatClient.prompt()
                 .system(systemPrompt)
                 .user(prompt)
-                .tools(toolProviders.toArray(new ToolCallbackProvider[0]))
+                .toolCallbacks(callbacks)
                 .call()
                 .content();
 

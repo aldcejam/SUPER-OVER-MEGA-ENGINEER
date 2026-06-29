@@ -19,6 +19,15 @@ spring:
         dimension: 384
         initialize-schema: true
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    tags:
+      application: ${spring.application.name:ai-service}
+
 resilience4j:
   ratelimiter:
     instances:

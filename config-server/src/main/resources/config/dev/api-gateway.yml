@@ -8,6 +8,12 @@ spring:
         locator:
           enabled: true
       routes:
+        - id: block-github-analysis-route
+          uri: noop://localhost
+          predicates:
+            - Path=/ai/api/ai/github/**
+          filters:
+            - SetStatus=404
         - id: ai-service-route
           uri: lb://ai-service
           predicates:

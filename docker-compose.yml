@@ -205,6 +205,10 @@ services:
       GEMINI_API_KEY: ${GEMINI_API_KEY}
       DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY}
       GITHUB_PERSONAL_ACCESS_TOKEN: ${GITHUB_PERSONAL_ACCESS_TOKEN}
+      SPRING_AI_MCP_CLIENT_STDIO_CONNECTIONS_GITHUB_COMMAND: "npx"
+      SPRING_AI_MCP_CLIENT_STDIO_CONNECTIONS_GITHUB_ARGS_0: "-y"
+      SPRING_AI_MCP_CLIENT_STDIO_CONNECTIONS_GITHUB_ARGS_1: "@modelcontextprotocol/server-github"
+      SPRING_AI_MCP_CLIENT_STDIO_CONNECTIONS_GITHUB_ENV_GITHUB_PERSONAL_ACCESS_TOKEN: ${GITHUB_PERSONAL_ACCESS_TOKEN}
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-vector:5432/supersys_vector_db
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_VECTOR_USER:-apm}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_VECTOR_PASSWORD:-super_password_2026}
@@ -350,6 +354,8 @@ services:
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
     volumes:
       - ./observability/grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+      - ./observability/grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./observability/grafana/dashboards:/etc/grafana/provisioning/dashboards
     networks:
       - supersys-net
     profiles: 

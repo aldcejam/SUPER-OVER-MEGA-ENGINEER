@@ -19,6 +19,8 @@ RUN mvn clean package -DskipTests -B
 # --- Stage 2: Runtime ---
 FROM eclipse-temurin:21-jre
 
+RUN apt-get update && apt-get install -y nodejs npm && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 # Copia o agente OTel se ele existir no contexto de build (opcional)
