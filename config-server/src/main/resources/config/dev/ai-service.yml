@@ -17,7 +17,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   ai:
     openai:
-      api-key: ${DEEPSEEK_API_KEY:placeholder_api_key}
+      api-key: 123
       base-url: https://api.deepseek.com
       chat:
         options:
