@@ -2,6 +2,9 @@ package com.supersys.ai.controller.graphql;
 
 import com.supersys.ai.service.AiQueryService;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.document.Document;
+import java.util.stream.Collectors;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.chat.model.ChatModel;
@@ -34,9 +37,26 @@ public class AiGraphQLController {
 
     @QueryMapping
     public AiResponse askProjectQuestion(@Argument String prompt) {
-        String systemPrompt = "Você é um assistente de desenvolvimento sênior respondendo a perguntas sobre o projeto." +
-                              " O repositório deste projeto no GitHub é 'aldcejam/SUPER-OVER-MEGA-ENGINEER'." +
-                              " Você deve utilizar as ferramentas do GitHub (GitHub MCP tools) disponíveis para buscar informações no repositório ou responder à pergunta do usuário.";
+        String context = "";
+        try {
+            List<Document> similarDocuments = this.vectorStore.similaritySearch(
+                    SearchRequest.builder().query(prompt).topK(2).build()
+            );
+            if (similarDocuments != null && !similarDocuments.isEmpty()) {
+                context = similarDocuments.stream()
+                        .map(Document::getText)
+                        .collect(Collectors.joining("\n"));
+            }
+        } catch (Exception e) {
+            context = "Nenhum contexto adicional encontrado no banco vetorial.";
+        }
+
+        String systemPrompt = "Você é um assistente de desenvolvimento sênior respondendo a perguntas sobre o projeto.\n" +
+                              " O repositório deste projeto no GitHub é 'aldcejam/SUPER-OVER-MEGA-ENGINEER'.\n" +
+                              " Você deve utilizar as ferramentas do GitHub (GitHub MCP tools) disponíveis para buscar informações no repositório ou responder à pergunta do usuário.\n\n" +
+                              "--- CONTEXTO ADICIONAL DA BASE VETORIAL ---\n" +
+                              context + "\n" +
+                              "-------------------------------------------";
         
         ToolCallback[] callbacks = toolProviders.stream()
                 .flatMap(p -> Arrays.stream(p.getToolCallbacks()))
