@@ -36,3 +36,10 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
+
+resilience4j:
+  bulkhead:
+    instances:
+      projectQueryBulkhead:
+        maxConcurrentCalls: 10
+        maxWaitDuration: 0ms

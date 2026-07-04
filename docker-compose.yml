@@ -200,9 +200,6 @@ services:
     build:
       context: ./ai-service
       dockerfile: ../Dockerfile
-    container_name: supersys-ai-service
-    ports:
-      - "8082:8082"
     environment:
       <<: *common-env
       SPRING_PROFILES_ACTIVE: dev
@@ -234,6 +231,13 @@ services:
         condition: service_healthy
     networks:
       - supersys-net
+    deploy:
+      mode: replicated
+      replicas: 2
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1.5G
     profiles:
       - domain
 
@@ -241,9 +245,6 @@ services:
     build:
       context: ./lambda-service
       dockerfile: ../Dockerfile
-    container_name: supersys-lambda-service
-    ports:
-      - "8086:8086"
     environment:
       <<: *common-env
       SERVER_PORT: 8086
@@ -268,6 +269,9 @@ services:
         condition: service_healthy
     networks:
       - supersys-net
+    deploy:
+      mode: replicated
+      replicas: 2
     profiles:
       - domain
 
@@ -281,9 +285,6 @@ services:
     build:
       context: ./project-analysis
       dockerfile: ../Dockerfile
-    container_name: supersys-project-analysis
-    ports:
-      - "8083:8083"
 
     environment:
       <<: *common-env
@@ -312,6 +313,13 @@ services:
         condition: service_healthy
     networks:
       - supersys-net
+    deploy:
+      mode: replicated
+      replicas: 2
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
     profiles:
       - domain
 

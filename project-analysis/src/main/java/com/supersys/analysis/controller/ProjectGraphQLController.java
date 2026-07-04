@@ -12,6 +12,7 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import com.supersys.analysis.service.ProjectService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,9 @@ public class ProjectGraphQLController {
     private ScheduleRepository scheduleRepository;
 
     @Autowired
+    private ProjectService projectService;
+
+    @Autowired
     private AnalysisRestService analysisService;
 
     @QueryMapping
@@ -36,7 +40,7 @@ public class ProjectGraphQLController {
 
     @QueryMapping
     public ProjectEntity findProjectById(@Argument Long id) {
-        return projectRepository.findById(id).orElse(null);
+        return projectService.findProjectById(id);
     }
 
     @MutationMapping

@@ -12,6 +12,8 @@ import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.stream.Collectors;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 
 @Service
 public class ScheduleAnalysisService {
@@ -23,6 +25,8 @@ public class ScheduleAnalysisService {
         this.chatModel = chatModel;
     }
 
+    @CircuitBreaker(name = "aiAnalysisBreaker")
+    @RateLimiter(name = "aiAnalysisLimiter")
     public ScheduleAnalysisResponseDto analyze(ScheduleDto schedule) {
         var outputConverter = new BeanOutputConverter<>(ScheduleAnalysisResponseDto.class);
 
