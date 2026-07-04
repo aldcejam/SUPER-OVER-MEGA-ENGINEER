@@ -408,27 +408,6 @@ services:
     profiles:
       - infra
 
-  # ============================================
-  # LOCALSTACK
-  # ============================================
-
-  localstack:
-    image: localstack/localstack:3.8.0
-    container_name: supersys-localstack
-    ports:
-      - "4566:4566"
-    environment:
-      - SERVICES=s3,sqs
-      - DEBUG=1
-      - AWS_DEFAULT_REGION=us-east-1
-      - AWS_ACCESS_KEY_ID=test
-      - AWS_SECRET_ACCESS_KEY=test
-    volumes:
-      - ./localstack-init.sh:/etc/localstack/init/ready.d/init.sh
-    networks:
-      - supersys-net
-    profiles:
-      - infra
 
 volumes:
   pgdata_relational:

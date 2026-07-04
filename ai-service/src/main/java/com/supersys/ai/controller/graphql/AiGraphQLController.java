@@ -1,47 +1,32 @@
-package com.supersys.ai.controller;
+package com.supersys.ai.controller.graphql;
 
-import com.supersys.ai.dto.ScheduleDto;
-import com.supersys.ai.dto.ScheduleAnalysisResponseDto;
-import com.supersys.ai.service.ScheduleAnalysisService;
 import com.supersys.ai.service.AiQueryService;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.chat.model.ChatModel;
-import org.springframework.ai.chat.model.ChatResponse;
-import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.document.Document;
-import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
-import io.github.resilience4j.ratelimiter.RequestNotPermitted;
-import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 
 import java.util.List;
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 @Controller
 public class AiGraphQLController {
 
     private final ChatModel chatModel;
     private final VectorStore vectorStore;
-    private final ScheduleAnalysisService scheduleAnalysisService;
     private final AiQueryService aiQueryService;
     private final ChatClient chatClient;
     private final List<ToolCallbackProvider> toolProviders;
 
     @Autowired
-    public AiGraphQLController(ChatModel chatModel, VectorStore vectorStore, ScheduleAnalysisService scheduleAnalysisService, AiQueryService aiQueryService, ChatClient.Builder chatClientBuilder, @Autowired(required = false) List<ToolCallbackProvider> toolProviders) {
+    public AiGraphQLController(ChatModel chatModel, VectorStore vectorStore, AiQueryService aiQueryService, ChatClient.Builder chatClientBuilder, @Autowired(required = false) List<ToolCallbackProvider> toolProviders) {
         this.chatModel = chatModel;
         this.vectorStore = vectorStore;
-        this.scheduleAnalysisService = scheduleAnalysisService;
         this.aiQueryService = aiQueryService;
         this.chatClient = chatClientBuilder.build();
         this.toolProviders = toolProviders != null ? toolProviders : List.of();
@@ -73,12 +58,5 @@ public class AiGraphQLController {
         return new AiResponse(answer);
     }
 
-    @MutationMapping
-    public ScheduleAnalysisResponseDto analyzeSchedule(@Argument ScheduleDto schedule) {
-        return scheduleAnalysisService.analyze(schedule);
-    }
-
     public record AiResponse(String answer) {}
 }
-
-

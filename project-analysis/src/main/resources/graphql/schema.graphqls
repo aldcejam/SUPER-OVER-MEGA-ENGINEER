@@ -1,53 +1,9 @@
-type Schedule {
-    id: ID!
-    title: String!
-    startDate: String
-    endDate: String
-    status: String
-    details: String
-    analysisResult: String
-    steps: [ScheduleStep]
-}
-
-input ScheduleInput {
-    title: String!
-    startDate: String
-    endDate: String
-    status: String
-    details: String
-    steps: [ScheduleStepInput]
-}
-
-type ScheduleStep {
-    stepName: String!
-    description: String
-    sequence: Int
-    daysRequired: Int
-    completed: Boolean
-}
-
-input ScheduleStepInput {
-    stepName: String!
-    description: String
-    sequence: Int
-    daysRequired: Int
-    completed: Boolean
-}
-
 type Query {
-    findAllSchedules: [Schedule]
-    findScheduleById(id: ID!): Schedule
     findAllProjects: [Project]
     findProjectById(id: ID!): Project
-    listS3Files: [String]
-    downloadS3File(filename: String!): String
 }
 
 type Mutation {
-    createSchedule(input: ScheduleInput!): Schedule
-    updateSchedule(id: ID!, input: ScheduleInput!): Schedule
-    deleteSchedule(id: ID!): Boolean
-    requestAnalysis(id: ID!): Boolean
     createProject(input: ProjectInput!): Project
     updateProject(id: ID!, input: ProjectInput!): Project
     deleteProject(id: ID!): Boolean
@@ -63,7 +19,6 @@ type Project {
     status: String
     analysisResult: String
     resourceAnalysisResult: String
-    schedule: Schedule
     allocations: [ResourceAllocation]
 }
 
@@ -72,7 +27,6 @@ input ProjectInput {
     description: String
     budget: Float
     status: String
-    scheduleId: ID
     allocations: [ResourceAllocationInput]
 }
 
@@ -92,4 +46,3 @@ input ResourceAllocationInput {
     costPerHour: Float
     quantity: Int
 }
-

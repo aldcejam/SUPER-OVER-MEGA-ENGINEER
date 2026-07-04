@@ -26,9 +26,6 @@ public class ProjectEntity {
     @Column(columnDefinition = "TEXT")
     private String resourceAnalysisResult;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "schedule_id")
-    private ScheduleEntity schedule;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ResourceAllocation> allocations = new ArrayList<>();
@@ -55,8 +52,6 @@ public class ProjectEntity {
     public String getResourceAnalysisResult() { return resourceAnalysisResult; }
     public void setResourceAnalysisResult(String resourceAnalysisResult) { this.resourceAnalysisResult = resourceAnalysisResult; }
 
-    public ScheduleEntity getSchedule() { return schedule; }
-    public void setSchedule(ScheduleEntity schedule) { this.schedule = schedule; }
 
     public List<ResourceAllocation> getAllocations() { return allocations; }
     public void setAllocations(List<ResourceAllocation> allocations) { 

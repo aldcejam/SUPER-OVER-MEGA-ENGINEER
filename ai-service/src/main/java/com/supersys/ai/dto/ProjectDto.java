@@ -8,6 +8,5 @@ public record ProjectDto(
     String description,
     Double budget,
     String status,
-    ScheduleDto schedule,
     List<ResourceAllocationDto> allocations
 ) {}

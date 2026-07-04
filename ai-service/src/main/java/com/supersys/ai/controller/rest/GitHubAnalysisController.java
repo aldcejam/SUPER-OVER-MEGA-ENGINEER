@@ -1,4 +1,4 @@
-package com.supersys.ai.controller;
+package com.supersys.ai.controller.rest;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.web.bind.annotation.GetMapping;

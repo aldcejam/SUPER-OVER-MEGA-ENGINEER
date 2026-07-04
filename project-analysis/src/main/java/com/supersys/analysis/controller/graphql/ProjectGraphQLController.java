@@ -1,10 +1,8 @@
-package com.supersys.analysis.controller;
+package com.supersys.analysis.controller.graphql;
 
 import com.supersys.analysis.entity.ProjectEntity;
 import com.supersys.analysis.entity.ResourceAllocation;
-import com.supersys.analysis.entity.ScheduleEntity;
 import com.supersys.analysis.repository.ProjectRepository;
-import com.supersys.analysis.repository.ScheduleRepository;
 import com.supersys.analysis.service.AnalysisRestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -23,9 +21,6 @@ public class ProjectGraphQLController {
 
     @Autowired
     private ProjectRepository projectRepository;
-
-    @Autowired
-    private ScheduleRepository scheduleRepository;
 
     @Autowired
     private ProjectService projectService;
@@ -103,13 +98,6 @@ public class ProjectGraphQLController {
             project.setBudget(budget.doubleValue());
         }
         if (input.containsKey("status")) project.setStatus((String) input.get("status"));
-
-        if (input.containsKey("scheduleId") && input.get("scheduleId") != null) {
-            Long scheduleId = Long.parseLong(input.get("scheduleId").toString());
-            ScheduleEntity schedule = scheduleRepository.findById(scheduleId)
-                    .orElseThrow(() -> new RuntimeException("Schedule not found"));
-            project.setSchedule(schedule);
-        }
 
         if (input.containsKey("allocations") && input.get("allocations") != null) {
             @SuppressWarnings("unchecked")
