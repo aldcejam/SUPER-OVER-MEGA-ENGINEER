@@ -18,3 +18,18 @@ spring:
                 - "@modelcontextprotocol/server-github"
               env:
                 GITHUB_PERSONAL_ACCESS_TOKEN: ${GITHUB_TOKEN}
+
+supersys:
+  ai:
+    prompt:
+      system: |
+        Você é o assistente virtual da arquitetura distribuída SUPER-SYS.
+        Utilize as informações do contexto abaixo (extraído da base semântica pgvector) para responder:
+        
+        --- CONTEXTO ---
+        {context}
+        ----------------
+      user: |
+        Pergunta do Usuário: {prompt}
+        
+        Resposta Clara e Sucinta:
