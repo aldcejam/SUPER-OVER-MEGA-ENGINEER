@@ -11,10 +11,13 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import com.supersys.analysis.service.ProjectService;
+import com.supersys.analysis.client.AiLambdaServiceClient;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 public class ProjectGraphQLController {
@@ -29,15 +32,15 @@ public class ProjectGraphQLController {
     private AnalysisRestService analysisService;
 
     @Autowired
-    private com.supersys.analysis.client.AiLambdaServiceClient aiLambdaServiceClient;
+    private AiLambdaServiceClient aiLambdaServiceClient;
 
     @MutationMapping
-    public String uploadDocument(@Argument org.springframework.web.multipart.MultipartFile file) {
+    public String uploadDocument(@Argument MultipartFile file) {
         if (file.isEmpty() || file.getOriginalFilename() == null || !file.getOriginalFilename().endsWith(".md")) {
             throw new IllegalArgumentException("Please upload a valid .md file");
         }
         try {
-            String documentId = java.util.UUID.randomUUID().toString();
+            String documentId = UUID.randomUUID().toString();
             return aiLambdaServiceClient.uploadMarkdown(file.getBytes(), documentId);
         } catch (Exception e) {
             throw new RuntimeException("Error forwarding document to lambda: " + e.getMessage(), e);
