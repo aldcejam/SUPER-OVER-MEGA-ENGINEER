@@ -1,0 +1,158 @@
+
+The following files have been resolved:
+   org.springframework.cloud:spring-cloud-starter-gateway:jar:4.1.5:compile[36m -- module spring.cloud.starter.gateway[0;1;33m (auto)[m
+   org.springframework.cloud:spring-cloud-starter:jar:4.1.4:compile[36m -- module spring.cloud.starter[0;1;33m (auto)[m
+   org.springframework.cloud:spring-cloud-context:jar:4.1.4:compile[36m -- module spring.cloud.context[0;1;33m (auto)[m
+   org.springframework.security:spring-security-crypto:jar:6.3.1:compile[36m -- module spring.security.crypto[0;1m [auto][m
+   org.springframework.cloud:spring-cloud-commons:jar:4.1.4:compile[36m -- module spring.cloud.commons[0;1;33m (auto)[m
+   org.springframework.security:spring-security-rsa:jar:1.1.3:compile[36m -- module spring.security.rsa[0;1;33m (auto)[m
+   org.bouncycastle:bcprov-jdk18on:jar:1.78:compile[36m -- module org.bouncycastle.provider[m
+   org.springframework.cloud:spring-cloud-gateway-server:jar:4.1.5:compile[36m -- module spring.cloud.gateway.server[0;1;33m (auto)[m
+   org.springframework.boot:spring-boot-starter-validation:jar:3.3.2:compile[36m -- module spring.boot.starter.validation[0;1m [auto][m
+   org.apache.tomcat.embed:tomcat-embed-el:jar:10.1.26:compile[36m -- module tomcat.embed.el[0;1;33m (auto)[m
+   org.hibernate.validator:hibernate-validator:jar:8.0.1.Final:compile[36m -- module org.hibernate.validator[0;1m [auto][m
+   jakarta.validation:jakarta.validation-api:jar:3.0.2:compile[36m -- module jakarta.validation[m
+   org.jboss.logging:jboss-logging:jar:3.5.3.Final:compile[36m -- module org.jboss.logging[m
+   com.fasterxml:classmate:jar:1.7.0:compile[36m -- module com.fasterxml.classmate[m
+   io.projectreactor.addons:reactor-extra:jar:3.5.1:compile[36m -- module reactor.extra[0;1m [auto][m
+   io.projectreactor:reactor-core:jar:3.6.8:compile[36m -- module reactor.core[0;1m [auto][m
+   org.reactivestreams:reactive-streams:jar:1.0.4:compile[36m -- module org.reactivestreams[0;1m [auto][m
+   org.springframework.boot:spring-boot-starter-webflux:jar:3.3.2:compile[36m -- module spring.boot.starter.webflux[0;1m [auto][m
+   org.springframework.boot:spring-boot-starter-json:jar:3.3.2:compile[36m -- module spring.boot.starter.json[0;1m [auto][m
+   com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.17.2:compile[36m -- module com.fasterxml.jackson.datatype.jdk8[m
+   com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.17.2:compile[36m -- module com.fasterxml.jackson.module.paramnames[m
+   org.springframework.boot:spring-boot-starter-reactor-netty:jar:3.3.2:compile[36m -- module spring.boot.starter.reactor.netty[0;1m [auto][m
+   io.projectreactor.netty:reactor-netty-http:jar:1.1.21:compile[36m -- module reactor.netty.http[0;1m [auto][m
+   io.netty:netty-codec-http:jar:4.1.111.Final:compile[36m -- module io.netty.codec.http[0;1m [auto][m
+   io.netty:netty-common:jar:4.1.111.Final:compile[36m -- module io.netty.common[0;1m [auto][m
+   io.netty:netty-buffer:jar:4.1.111.Final:compile[36m -- module io.netty.buffer[0;1m [auto][m
+   io.netty:netty-transport:jar:4.1.111.Final:compile[36m -- module io.netty.transport[0;1m [auto][m
+   io.netty:netty-codec:jar:4.1.111.Final:compile[36m -- module io.netty.codec[0;1m [auto][m
+   io.netty:netty-handler:jar:4.1.111.Final:compile[36m -- module io.netty.handler[0;1m [auto][m
+   io.netty:netty-codec-http2:jar:4.1.111.Final:compile[36m -- module io.netty.codec.http2[0;1m [auto][m
+   io.netty:netty-resolver-dns:jar:4.1.111.Final:compile[36m -- module io.netty.resolver.dns[0;1m [auto][m
+   io.netty:netty-resolver:jar:4.1.111.Final:compile[36m -- module io.netty.resolver[0;1m [auto][m
+   io.netty:netty-codec-dns:jar:4.1.111.Final:compile[36m -- module io.netty.codec.dns[0;1m [auto][m
+   io.netty:netty-resolver-dns-native-macos:jar:osx-x86_64:4.1.111.Final:compile[36m -- module io.netty.resolver.dns.macos.osx.x86_64[0;1m [auto][m
+   io.netty:netty-resolver-dns-classes-macos:jar:4.1.111.Final:compile[36m -- module io.netty.resolver.dns.classes.macos[0;1m [auto][m
+   io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.1.111.Final:compile[36m -- module io.netty.transport.epoll.linux.x86_64[0;1m [auto][m
+   io.netty:netty-transport-native-unix-common:jar:4.1.111.Final:compile[36m -- module io.netty.transport.unix.common[0;1m [auto][m
+   io.netty:netty-transport-classes-epoll:jar:4.1.111.Final:compile[36m -- module io.netty.transport.classes.epoll[0;1m [auto][m
+   io.projectreactor.netty:reactor-netty-core:jar:1.1.21:compile[36m -- module reactor.netty.core[0;1m [auto][m
+   io.netty:netty-handler-proxy:jar:4.1.111.Final:compile[36m -- module io.netty.handler.proxy[0;1m [auto][m
+   io.netty:netty-codec-socks:jar:4.1.111.Final:compile[36m -- module io.netty.codec.socks[0;1m [auto][m
+   org.springframework:spring-web:jar:6.1.11:compile[36m -- module spring.web[0;1m [auto][m
+   org.springframework:spring-beans:jar:6.1.11:compile[36m -- module spring.beans[0;1m [auto][m
+   org.springframework:spring-webflux:jar:6.1.11:compile[36m -- module spring.webflux[0;1m [auto][m
+   org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:jar:4.1.3:compile[36m -- module spring.cloud.starter.netflix.eureka.client[0;1;33m (auto)[m
+   org.springframework.cloud:spring-cloud-netflix-eureka-client:jar:4.1.3:compile[36m -- module spring.cloud.netflix.eureka.client[0;1;33m (auto)[m
+   org.apache.httpcomponents.client5:httpclient5:jar:5.3.1:compile[36m -- module org.apache.httpcomponents.client5.httpclient5[0;1m [auto][m
+   org.apache.httpcomponents.core5:httpcore5:jar:5.2.5:compile[36m -- module org.apache.httpcomponents.core5.httpcore5[0;1m [auto][m
+   org.apache.httpcomponents.core5:httpcore5-h2:jar:5.2.5:compile[36m -- module org.apache.httpcomponents.core5.httpcore5.h2[0;1m [auto][m
+   com.netflix.eureka:eureka-client:jar:2.0.3:compile[36m -- module eureka.client[0;1;33m (auto)[m
+   com.thoughtworks.xstream:xstream:jar:1.4.20:compile[36m -- module xstream[0;1;33m (auto)[m
+   io.github.x-stream:mxparser:jar:1.2.2:compile[36m -- module io.github.xstream.mxparser[0;1m [auto][m
+   xmlpull:xmlpull:jar:1.1.3.1:compile[36m -- module xmlpull[0;1;33m (auto)[m
+   jakarta.ws.rs:jakarta.ws.rs-api:jar:3.1.0:compile[36m -- module jakarta.ws.rs[m
+   jakarta.inject:jakarta.inject-api:jar:2.0.1:compile[36m -- module jakarta.inject[m
+   jakarta.annotation:jakarta.annotation-api:jar:2.1.1:compile[36m -- module jakarta.annotation[m
+   com.netflix.spectator:spectator-api:jar:1.7.3:compile[36m -- module com.netflix.spectator.api[0;1m [auto][m
+   org.slf4j:slf4j-api:jar:2.0.13:compile[36m -- module org.slf4j[m
+   org.apache.httpcomponents:httpclient:jar:4.5.3:compile[36m -- module httpclient[0;1;33m (auto)[m
+   org.apache.httpcomponents:httpcore:jar:4.4.16:compile[36m -- module org.apache.httpcomponents.httpcore[0;1m [auto][m
+   commons-codec:commons-codec:jar:1.16.1:compile[36m -- module org.apache.commons.codec[m
+   commons-configuration:commons-configuration:jar:1.10:compile[36m -- module commons.configuration[0;1;33m (auto)[m
+   commons-lang:commons-lang:jar:2.6:compile[36m -- module commons.lang[0;1;33m (auto)[m
+   com.fasterxml.jackson.core:jackson-annotations:jar:2.17.2:compile[36m -- module com.fasterxml.jackson.annotation[m
+   com.fasterxml.jackson.core:jackson-core:jar:2.17.2:compile[36m -- module com.fasterxml.jackson.core[m
+   com.netflix.netflix-commons:netflix-eventbus:jar:0.3.0:runtime[36m -- module netflix.eventbus[0;1;33m (auto)[m
+   com.netflix.netflix-commons:netflix-infix:jar:0.3.0:runtime[36m -- module netflix.infix[0;1;33m (auto)[m
+   commons-jxpath:commons-jxpath:jar:1.3:runtime[36m -- module commons.jxpath[0;1;33m (auto)[m
+   joda-time:joda-time:jar:2.3:runtime[36m -- module joda.time[0;1;33m (auto)[m
+   org.antlr:antlr-runtime:jar:3.4:runtime[36m -- module antlr.runtime[0;1;33m (auto)[m
+   org.antlr:stringtemplate:jar:3.2.1:runtime[36m -- module stringtemplate[0;1;33m (auto)[m
+   antlr:antlr:jar:2.7.7:runtime[36m -- module antlr[0;1;33m (auto)[m
+   com.google.code.gson:gson:jar:2.10.1:runtime[36m -- module com.google.gson[m
+   com.netflix.servo:servo-core:jar:0.5.3:runtime[36m -- module servo.core[0;1;33m (auto)[m
+   org.apache.commons:commons-math:jar:2.2:runtime[36m -- module commons.math[0;1;33m (auto)[m
+   javax.annotation:javax.annotation-api:jar:1.2:runtime[36m -- module javax.annotation.api[0;1;33m (auto)[m
+   org.codehaus.jettison:jettison:jar:1.5.4:runtime[36m -- module jettison[0;1;33m (auto)[m
+   com.netflix.eureka:eureka-core:jar:2.0.3:compile[36m -- module eureka.core[0;1;33m (auto)[m
+   com.fasterxml.woodstox:woodstox-core:jar:6.2.1:compile[36m -- module com.ctc.wstx[m
+   org.codehaus.woodstox:stax2-api:jar:4.2.1:compile[36m -- module org.codehaus.stax2[m
+   com.google.guava:guava:jar:33.0.0-jre:runtime[36m -- module com.google.common[0;1m [auto][m
+   com.google.guava:failureaccess:jar:1.0.2:runtime[36m -- module com.google.common.util.concurrent.internal[0;1m [auto][m
+   com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:runtime[36m -- module listenablefuture[0;1;33m (auto)[m
+   org.checkerframework:checker-qual:jar:3.41.0:runtime[36m -- module org.checkerframework.checker.qual[0;1m [auto][m
+   com.google.errorprone:error_prone_annotations:jar:2.23.0:runtime[36m -- module com.google.errorprone.annotations[0;1m [auto][m
+   com.google.j2objc:j2objc-annotations:jar:2.8:runtime[36m -- module j2objc.annotations[0;1;33m (auto)[m
+   org.springframework.cloud:spring-cloud-starter-loadbalancer:jar:4.1.4:compile[36m -- module spring.cloud.starter.loadbalancer[0;1;33m (auto)[m
+   org.springframework.cloud:spring-cloud-loadbalancer:jar:4.1.4:compile[36m -- module spring.cloud.loadbalancer[0;1;33m (auto)[m
+   org.springframework.boot:spring-boot-starter-cache:jar:3.3.2:compile[36m -- module spring.boot.starter.cache[0;1m [auto][m
+   org.springframework:spring-context-support:jar:6.1.11:compile[36m -- module spring.context.support[0;1m [auto][m
+   com.stoyanr:evictor:jar:1.0.0:compile[36m -- module evictor[0;1;33m (auto)[m
+   org.springframework.cloud:spring-cloud-starter-config:jar:4.1.3:compile[36m -- module spring.cloud.starter.config[0;1;33m (auto)[m
+   org.springframework.cloud:spring-cloud-config-client:jar:4.1.3:compile[36m -- module spring.cloud.config.client[0;1;33m (auto)[m
+   org.springframework.boot:spring-boot-autoconfigure:jar:3.3.2:compile[36m -- module spring.boot.autoconfigure[0;1m [auto][m
+   com.fasterxml.jackson.core:jackson-databind:jar:2.17.2:compile[36m -- module com.fasterxml.jackson.databind[m
+   org.springframework.boot:spring-boot-starter-actuator:jar:3.3.2:compile[36m -- module spring.boot.starter.actuator[0;1m [auto][m
+   org.springframework.boot:spring-boot-starter:jar:3.3.2:compile[36m -- module spring.boot.starter[0;1m [auto][m
+   org.springframework.boot:spring-boot:jar:3.3.2:compile[36m -- module spring.boot[0;1m [auto][m
+   org.springframework:spring-context:jar:6.1.11:compile[36m -- module spring.context[0;1m [auto][m
+   org.springframework:spring-aop:jar:6.1.11:compile[36m -- module spring.aop[0;1m [auto][m
+   org.springframework:spring-expression:jar:6.1.11:compile[36m -- module spring.expression[0;1m [auto][m
+   org.springframework.boot:spring-boot-starter-logging:jar:3.3.2:compile[36m -- module spring.boot.starter.logging[0;1m [auto][m
+   ch.qos.logback:logback-classic:jar:1.5.6:compile[36m -- module ch.qos.logback.classic[m
+   ch.qos.logback:logback-core:jar:1.5.6:compile[36m -- module ch.qos.logback.core[m
+   org.apache.logging.log4j:log4j-to-slf4j:jar:2.23.1:compile[36m -- module org.apache.logging.log4j.to.slf4j[m
+   org.apache.logging.log4j:log4j-api:jar:2.23.1:compile[36m -- module org.apache.logging.log4j[m
+   org.slf4j:jul-to-slf4j:jar:2.0.13:compile[36m -- module jul.to.slf4j[m
+   org.yaml:snakeyaml:jar:2.2:compile[36m -- module org.yaml.snakeyaml[m
+   org.springframework.boot:spring-boot-actuator-autoconfigure:jar:3.3.2:compile[36m -- module spring.boot.actuator.autoconfigure[0;1m [auto][m
+   org.springframework.boot:spring-boot-actuator:jar:3.3.2:compile[36m -- module spring.boot.actuator[0;1m [auto][m
+   com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.17.2:compile[36m -- module com.fasterxml.jackson.datatype.jsr310[m
+   io.micrometer:micrometer-observation:jar:1.13.2:compile[36m -- module micrometer.observation[0;1m [auto][m
+   io.micrometer:micrometer-commons:jar:1.13.2:compile[36m -- module micrometer.commons[0;1m [auto][m
+   io.micrometer:micrometer-jakarta9:jar:1.13.2:compile[36m -- module micrometer.jakarta9[0;1m [auto][m
+   io.micrometer:micrometer-registry-prometheus:jar:1.13.2:runtime[36m -- module micrometer.registry.prometheus[0;1m [auto][m
+   io.micrometer:micrometer-core:jar:1.13.2:compile[36m -- module micrometer.core[0;1m [auto][m
+   org.hdrhistogram:HdrHistogram:jar:2.2.2:runtime[36m -- module HdrHistogram[0;1;33m (auto)[m
+   org.latencyutils:LatencyUtils:jar:2.0.3:runtime[36m -- module LatencyUtils[0;1;33m (auto)[m
+   io.prometheus:prometheus-metrics-core:jar:1.2.1:runtime[36m -- module io.prometheus.metrics.core[0;1m [auto][m
+   io.prometheus:prometheus-metrics-model:jar:1.2.1:runtime[36m -- module io.prometheus.metrics.model[0;1m [auto][m
+   io.prometheus:prometheus-metrics-config:jar:1.2.1:runtime[36m -- module io.prometheus.metrics.config[0;1m [auto][m
+   io.prometheus:prometheus-metrics-tracer-common:jar:1.2.1:runtime[36m -- module io.prometheus.metrics.tracer.common[0;1m [auto][m
+   io.prometheus:prometheus-metrics-exposition-formats:jar:1.2.1:runtime[36m -- module io.prometheus.metrics.expositionformats[0;1m [auto][m
+   io.prometheus:prometheus-metrics-shaded-protobuf:jar:1.2.1:runtime[36m -- module prometheus.metrics.shaded.protobuf[0;1;33m (auto)[m
+   org.springframework.boot:spring-boot-starter-test:jar:3.3.2:test[36m -- module spring.boot.starter.test[0;1m [auto][m
+   org.springframework.boot:spring-boot-test:jar:3.3.2:test[36m -- module spring.boot.test[0;1m [auto][m
+   org.springframework.boot:spring-boot-test-autoconfigure:jar:3.3.2:test[36m -- module spring.boot.test.autoconfigure[0;1m [auto][m
+   com.jayway.jsonpath:json-path:jar:2.9.0:test[36m -- module json.path[0;1m [auto][m
+   jakarta.xml.bind:jakarta.xml.bind-api:jar:4.0.2:test[36m -- module jakarta.xml.bind[m
+   jakarta.activation:jakarta.activation-api:jar:2.1.3:test[36m -- module jakarta.activation[m
+   net.minidev:json-smart:jar:2.5.1:test[36m -- module json.smart[0;1;33m (auto)[m
+   net.minidev:accessors-smart:jar:2.5.1:test[36m -- module accessors.smart[0;1;33m (auto)[m
+   org.ow2.asm:asm:jar:9.6:test[36m -- module org.objectweb.asm[m
+   org.assertj:assertj-core:jar:3.25.3:test[36m -- module org.assertj.core[m
+   net.bytebuddy:byte-buddy:jar:1.14.18:test[36m -- module net.bytebuddy[m
+   org.awaitility:awaitility:jar:4.2.1:test[36m -- module awaitility[0;1;33m (auto)[m
+   org.hamcrest:hamcrest:jar:2.2:test[36m -- module org.hamcrest[0;1m [auto][m
+   org.junit.jupiter:junit-jupiter:jar:5.10.3:test[36m -- module org.junit.jupiter[m
+   org.junit.jupiter:junit-jupiter-api:jar:5.10.3:test[36m -- module org.junit.jupiter.api[m
+   org.opentest4j:opentest4j:jar:1.3.0:test[36m -- module org.opentest4j[m
+   org.junit.platform:junit-platform-commons:jar:1.10.3:test[36m -- module org.junit.platform.commons[m
+   org.apiguardian:apiguardian-api:jar:1.1.2:test[36m -- module org.apiguardian.api[m
+   org.junit.jupiter:junit-jupiter-params:jar:5.10.3:test[36m -- module org.junit.jupiter.params[m
+   org.junit.jupiter:junit-jupiter-engine:jar:5.10.3:test[36m -- module org.junit.jupiter.engine[m
+   org.junit.platform:junit-platform-engine:jar:1.10.3:test[36m -- module org.junit.platform.engine[m
+   org.mockito:mockito-core:jar:5.11.0:test[36m -- module org.mockito[0;1m [auto][m
+   net.bytebuddy:byte-buddy-agent:jar:1.14.18:test[36m -- module net.bytebuddy.agent[m
+   org.objenesis:objenesis:jar:3.3:test[36m -- module org.objenesis[0;1m [auto][m
+   org.mockito:mockito-junit-jupiter:jar:5.11.0:test[36m -- module org.mockito.junit.jupiter[0;1m [auto][m
+   org.skyscreamer:jsonassert:jar:1.5.3:test[36m -- module jsonassert[0;1;33m (auto)[m
+   com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:test[36m -- module android.json[0;1;33m (auto)[m
+   org.springframework:spring-core:jar:6.1.11:compile[36m -- module spring.core[0;1m [auto][m
+   org.springframework:spring-jcl:jar:6.1.11:compile[36m -- module spring.jcl[0;1m [auto][m
+   org.springframework:spring-test:jar:6.1.11:test[36m -- module spring.test[0;1m [auto][m
+   org.xmlunit:xmlunit-core:jar:2.9.1:test[36m -- module org.xmlunit[0;1m [auto][m
+

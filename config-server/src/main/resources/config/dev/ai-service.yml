@@ -30,13 +30,14 @@ spring:
     mcp:
       client:
         stdio:
-          github:
-            command: "npx"
-            args:
-              - "-y"
-              - "@modelcontextprotocol/server-github"
-            env:
-              GITHUB_PERSONAL_ACCESS_TOKEN: ${GITHUB_PERSONAL_ACCESS_TOKEN}
+          servers:
+            github-server:
+              command: npx
+              args:
+                - "-y"
+                - "@modelcontextprotocol/server-github"
+              env:
+                GITHUB_PERSONAL_ACCESS_TOKEN: ${GITHUB_TOKEN}
 
 management:
   endpoints:
@@ -64,4 +65,22 @@ resilience4j:
         permittedNumberOfCallsInHalfOpenState: 3
         ignoreExceptions:
           - io.github.resilience4j.ratelimiter.RequestNotPermitted
+
+supersys:
+  ai:
+    prompt:
+      system: |
+        Você é um administrador do qual vai escolher alguém de uma lista pegada desse banco vetorial, do qual vai ser o contexto em si, e vai saber escolher qual pessoa que é a melhor para fazer o serviço. Essa escolha vai ser puramente aleatória.
+        
+        --- CONTEXTO ADICIONAL DA BASE VETORIAL ---
+        {context}
+        -------------------------------------------
+      project-system: |
+        Você é um assistente de desenvolvimento sênior respondendo a perguntas sobre o projeto.
+        O repositório deste projeto no GitHub é 'aldcejam/SUPER-OVER-MEGA-ENGINEER'.
+        Você deve utilizar as ferramentas do GitHub (GitHub MCP tools) disponíveis para buscar informações no repositório ou responder à pergunta do usuário.
+      user: |
+        Pergunta do Usuário: {prompt}
+        
+        Resposta Clara e Sucinta:
 

@@ -10,6 +10,7 @@ import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,12 @@ public class AiGraphQLController {
     private final ChatClient chatClient;
     private final List<ToolCallbackProvider> toolProviders;
 
+    @Value("${supersys.ai.prompt.project-system}")
+    private String projectSystemPromptTemplate;
+
+    @Value("${supersys.ai.prompt.system}")
+    private String systemPromptTemplate;
+
     @Autowired
     public AiGraphQLController(ChatModel chatModel, VectorStore vectorStore, AiQueryService aiQueryService, ChatClient.Builder chatClientBuilder, @Autowired(required = false) List<ToolCallbackProvider> toolProviders) {
         this.chatModel = chatModel;
@@ -37,6 +44,22 @@ public class AiGraphQLController {
 
     @QueryMapping
     public AiResponse askProjectQuestion(@Argument String prompt) {
+        ToolCallback[] callbacks = toolProviders.stream()
+                .flatMap(p -> Arrays.stream(p.getToolCallbacks()))
+                .toArray(ToolCallback[]::new);
+
+        String answer = this.chatClient.prompt()
+                .system(projectSystemPromptTemplate)
+                .user(prompt)
+                .toolCallbacks(callbacks)
+                .call()
+                .content();
+
+        return new AiResponse(answer);
+    }
+
+    @QueryMapping
+    public AiResponse askDeepSeek(@Argument String prompt) {
         String context = "";
         try {
             List<Document> similarDocuments = this.vectorStore.similaritySearch(
@@ -51,30 +74,14 @@ public class AiGraphQLController {
             context = "Nenhum contexto adicional encontrado no banco vetorial.";
         }
 
-        String systemPrompt = "Você é um assistente de desenvolvimento sênior respondendo a perguntas sobre o projeto.\n" +
-                              " O repositório deste projeto no GitHub é 'aldcejam/SUPER-OVER-MEGA-ENGINEER'.\n" +
-                              " Você deve utilizar as ferramentas do GitHub (GitHub MCP tools) disponíveis para buscar informações no repositório ou responder à pergunta do usuário.\n\n" +
-                              "--- CONTEXTO ADICIONAL DA BASE VETORIAL ---\n" +
-                              context + "\n" +
-                              "-------------------------------------------";
-        
-        ToolCallback[] callbacks = toolProviders.stream()
-                .flatMap(p -> Arrays.stream(p.getToolCallbacks()))
-                .toArray(ToolCallback[]::new);
+        String systemPrompt = systemPromptTemplate.replace("{context}", context);
 
         String answer = this.chatClient.prompt()
                 .system(systemPrompt)
                 .user(prompt)
-                .toolCallbacks(callbacks)
                 .call()
                 .content();
 
-        return new AiResponse(answer);
-    }
-
-    @QueryMapping
-    public AiResponse askDeepSeek(@Argument String prompt) {
-        String answer = aiQueryService.askDeepSeek(prompt);
         return new AiResponse(answer);
     }
 

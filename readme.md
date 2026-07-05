@@ -1,3 +1,8 @@
+## Documentação
+
+* [The Twelve-Factor App - Checklist e Plano de Ação](docs/12-factor-checklist.md)
+* [The Twelve-Factor App - Status de Implementação](docs/12-factor-implementation.md)
+
 ## Acesso ao Eureka interface
 ```
 http://localhost:8761

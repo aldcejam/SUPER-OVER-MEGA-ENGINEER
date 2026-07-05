@@ -3,33 +3,4 @@ spring:
     name: ai-service
   config:
     import: "optional:configserver:http://localhost:8888"
-  rabbitmq:
-    host: ${SPRING_RABBITMQ_HOST:localhost}
-    port: ${SPRING_RABBITMQ_PORT:5672}
-  ai:
-    mcp:
-      client:
-        stdio:
-          servers:
-            github-server:
-              command: npx
-              args:
-                - "-y"
-                - "@modelcontextprotocol/server-github"
-              env:
-                GITHUB_PERSONAL_ACCESS_TOKEN: ${GITHUB_TOKEN}
 
-supersys:
-  ai:
-    prompt:
-      system: |
-        Você é o assistente virtual da arquitetura distribuída SUPER-SYS.
-        Utilize as informações do contexto abaixo (extraído da base semântica pgvector) para responder:
-        
-        --- CONTEXTO ---
-        {context}
-        ----------------
-      user: |
-        Pergunta do Usuário: {prompt}
-        
-        Resposta Clara e Sucinta:
