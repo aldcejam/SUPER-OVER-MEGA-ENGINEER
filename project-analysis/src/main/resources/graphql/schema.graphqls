@@ -1,3 +1,5 @@
+scalar Upload
+
 type Query {
     findAllProjects: [Project]
     findProjectById(id: ID!): Project
@@ -9,6 +11,7 @@ type Mutation {
     deleteProject(id: ID!): Boolean
     requestProjectAnalysis(id: ID!): Boolean
     requestResourceAnalysis(id: ID!): Boolean
+    uploadDocument(file: Upload!): String
 }
 
 type Project {

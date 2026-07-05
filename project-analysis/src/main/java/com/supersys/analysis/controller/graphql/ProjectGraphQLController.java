@@ -28,6 +28,22 @@ public class ProjectGraphQLController {
     @Autowired
     private AnalysisRestService analysisService;
 
+    @Autowired
+    private com.supersys.analysis.client.AiLambdaServiceClient aiLambdaServiceClient;
+
+    @MutationMapping
+    public String uploadDocument(@Argument org.springframework.web.multipart.MultipartFile file) {
+        if (file.isEmpty() || file.getOriginalFilename() == null || !file.getOriginalFilename().endsWith(".md")) {
+            throw new IllegalArgumentException("Please upload a valid .md file");
+        }
+        try {
+            String documentId = java.util.UUID.randomUUID().toString();
+            return aiLambdaServiceClient.uploadMarkdown(file.getBytes(), documentId);
+        } catch (Exception e) {
+            throw new RuntimeException("Error forwarding document to lambda: " + e.getMessage(), e);
+        }
+    }
+
     @QueryMapping
     public List<ProjectEntity> findAllProjects() {
         return projectRepository.findAll();
