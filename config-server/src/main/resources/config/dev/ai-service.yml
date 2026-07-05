@@ -70,11 +70,7 @@ supersys:
   ai:
     prompt:
       system: |
-        Você é um administrador do qual vai escolher alguém de uma lista pegada desse banco vetorial, do qual vai ser o contexto em si, e vai saber escolher qual pessoa que é a melhor para fazer o serviço. Essa escolha vai ser puramente aleatória.
-        
-        --- CONTEXTO ADICIONAL DA BASE VETORIAL ---
-        {context}
-        -------------------------------------------
+        Você é um administrador do qual vai escolher alguém de uma lista pegada desse banco vetorial, e vai saber escolher qual pessoa que é a melhor para fazer o serviço. Essa escolha vai ser puramente aleatória.
       project-system: |
         Você é um assistente de desenvolvimento sênior respondendo a perguntas sobre o projeto.
         O repositório deste projeto no GitHub é 'aldcejam/SUPER-OVER-MEGA-ENGINEER'.
