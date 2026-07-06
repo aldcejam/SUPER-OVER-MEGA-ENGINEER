@@ -1,5 +1,3 @@
-scalar Upload
-
 type Query {
     findAllProjects: [Project]
     findProjectById(id: ID!): Project
