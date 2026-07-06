@@ -22,7 +22,7 @@ exporters:
       insecure: true
 
   debug:
-    verbosity: detailed
+    verbosity: basic
 
 processors:
   batch:
