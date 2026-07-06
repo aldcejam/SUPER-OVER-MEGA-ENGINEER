@@ -238,6 +238,8 @@ services:
         limits:
           cpus: '1.0'
           memory: 1.5G
+    volumes:
+      - /home/apm/.djl.ai:/root/.djl.ai
     profiles:
       - domain
 
@@ -272,6 +274,8 @@ services:
     deploy:
       mode: replicated
       replicas: 2
+    volumes:
+      - /home/apm/.djl.ai:/root/.djl.ai
     profiles:
       - domain
 

@@ -32,7 +32,6 @@ public class AiQueryService {
     }
 
     @CircuitBreaker(name = "aiAnalysisBreaker")
-    @RateLimiter(name = "aiAnalysisLimiter")
     public String askDeepSeek(String prompt) {
         return this.chatClient.prompt()
                 .system(systemPromptString)

@@ -20,6 +20,8 @@ import org.springframework.stereotype.Controller;
 
 import java.util.List;
 import java.util.Arrays;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 
 @Controller
 public class AiGraphQLController {
@@ -48,6 +50,7 @@ public class AiGraphQLController {
     }
 
     @QueryMapping
+    @RateLimiter(name = "aiAnalysisLimiter")
     public AiResponse askProjectQuestion(@Argument String prompt) {
         ToolCallback[] callbacks = toolProviders.stream()
                 .flatMap(p -> Arrays.stream(p.getToolCallbacks()))
@@ -64,6 +67,7 @@ public class AiGraphQLController {
     }
 
     @QueryMapping
+    @CircuitBreaker(name = "aiAnalysisBreaker")
     public AiResponse askDeepSeek(@Argument String prompt) {
         String answer = this.chatClient.prompt()
                 .system(systemPromptTemplate)
