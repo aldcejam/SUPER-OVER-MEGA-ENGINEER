@@ -7,6 +7,11 @@ spring:
       discovery:
         locator:
           enabled: true
+      default-filters:
+        - name: RequestRateLimiter
+          args:
+            key-resolver: "#{@ipKeyResolver}"
+            rate-limiter: "#{@customRateLimiter}"
       routes:
         - id: block-github-analysis-route
           uri: noop://localhost
