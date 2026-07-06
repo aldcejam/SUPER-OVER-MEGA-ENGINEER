@@ -279,6 +279,34 @@ services:
     profiles:
       - domain
 
+  mcp-service:
+    build:
+      context: ./mcp-service
+      dockerfile: ../Dockerfile
+    container_name: supersys-mcp-service
+    ports:
+      - "8087:8087"
+    environment:
+      <<: *common-env
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server-1:8761/eureka/,http://eureka-server-2:8761/eureka/,http://eureka-server-3:8761/eureka/
+    depends_on:
+      config-server:
+        condition: service_healthy
+      eureka-server-1:
+        condition: service_healthy
+      eureka-server-2:
+        condition: service_healthy
+      eureka-server-3:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    networks:
+      - supersys-net
+    profiles:
+      - domain
+
 
 
   # ============================================

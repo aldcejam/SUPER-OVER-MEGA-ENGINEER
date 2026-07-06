@@ -38,6 +38,10 @@ spring:
                 - "@modelcontextprotocol/server-github"
               env:
                 GITHUB_PERSONAL_ACCESS_TOKEN: ${GITHUB_TOKEN}
+        streamable-http:
+          connections:
+            database-mcp:
+              url: ${DATABASE_MCP_URL:http://mcp-service:8087}
 
 management:
   endpoints:
