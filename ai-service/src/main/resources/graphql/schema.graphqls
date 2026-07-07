@@ -1,8 +1,23 @@
 type Query {
     askDeepSeek(prompt: String!): AiResponse!
     askProjectQuestion(prompt: String!): AiResponse!
+    listDatabaseTools: [DatabaseTool!]!
+}
+
+type Mutation {
+    chatWithDatabase(message: String!, conversationId: String): DatabaseChatResponse!
 }
 
 type AiResponse {
     answer: String!
+}
+
+type DatabaseChatResponse {
+    answer: String!
+    conversationId: String!
+}
+
+type DatabaseTool {
+    name: String!
+    description: String!
 }

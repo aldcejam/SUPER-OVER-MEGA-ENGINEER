@@ -2,6 +2,7 @@ package com.supersys.ai.controller.rest;
 
 import com.supersys.ai.service.AiQueryService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
