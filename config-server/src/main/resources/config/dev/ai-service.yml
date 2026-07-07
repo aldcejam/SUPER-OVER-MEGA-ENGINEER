@@ -83,6 +83,7 @@ supersys:
         Pergunta do Usuário: {prompt}
         
         Resposta Clara e Sucinta:
+      emperor-context: ${EMPEROR_CONTEXT:Eu sou Julio Cesar, o Imperador}
       database-chat-system: |
         Você é um assistente de banco de dados inteligente do sistema SUPER-SYS.
         Seu objetivo é responder perguntas e executar consultas sobre o banco de dados relacional do sistema.
